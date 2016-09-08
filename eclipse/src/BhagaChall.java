@@ -5,16 +5,42 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 
 		private static final long serialVersionUID = -513804057617910473L;
 		
+
+		private int jogador = 0;
+		private String[] jogadores;
+		
+		public class Tabuleiro{
+
+			ArrayList<ArrayList<ArrayList<String>>> grade = new ArrayList<ArrayList<ArrayList>>();
+
+
+
+		}
+
 		public BhagaChall() throws RemoteException{
 			
+			jogadores = new String[2];
 		}
 
+		/* 1)registraJogador
+	 	* Recebe: string com o nome do usuário/jogador
+	 	* Retorna: id (valor inteiro) do usuário (que corresponde a um número de identificação único para
+	 	* este usuário durante uma partida), ­1 se este usuário já está  cadastrado ou ­2 se o número
+	 	* máximo de jogadores tiver sido atingido 
+	 	*/
 		@Override
 		public int registraJogador(String nome) throws RemoteException {
-			// TODO Auto-generated method stub
-			return 0;
+			if(jogador < 2){
+				jogadores[jogador++] = nome;
+				return 1
+			}else{
+				return 2;
+			}	
 		}
-
+		/* 2) encerraPartida
+		 * Recebe: id do usuário (obtido através da chamada registraJogador)
+		 * Retorna: ­1 (erro), 0 (ok) 
+		 */
 		@Override
 		public int encerraPartida(int id) throws RemoteException {
 			// TODO Auto-generated method stub
