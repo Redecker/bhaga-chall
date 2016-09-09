@@ -1,3 +1,5 @@
+package project;
+
 import java.rmi.Naming;
 
 public class BhagaChallClient {

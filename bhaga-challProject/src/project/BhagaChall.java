@@ -1,3 +1,5 @@
+package project;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -11,14 +13,9 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		
 		public class Tabuleiro{
 
-			ArrayList<ArrayList<ArrayList<String>>> grade = new ArrayList<ArrayList<ArrayList>>();
-
-
-
 		}
 
-		public BhagaChall() throws RemoteException{
-			
+		public BhagaChall() throws RemoteException{			
 			jogadores = new String[2];
 		}
 
@@ -32,7 +29,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		public int registraJogador(String nome) throws RemoteException {
 			if(jogador < 2){
 				jogadores[jogador++] = nome;
-				return 1
+				return 1;
 			}else{
 				return 2;
 			}	
@@ -90,3 +87,4 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		}
 		
 }
+

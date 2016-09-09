@@ -1,3 +1,5 @@
+package project;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -90,4 +92,5 @@ public interface BhagaChallInterface extends Remote {
 	public String obtemOponente(int id) throws RemoteException;
 	
 }
+
 
