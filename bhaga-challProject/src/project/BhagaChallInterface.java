@@ -58,7 +58,7 @@ public interface BhagaChallInterface extends Remote {
 	 * inválido), ­1 (erro), ­2 (partida não iniciada: ainda não há dois jogadores registrados na partida),
 	 * ­3 (não é a vez do jogador), ­4 (não está jogando com o animal correto) ou ­5 (direção inválida).
 	 */
-	public String moveTigre(int id, int direcao) throws RemoteException;
+	public String moveTigre(int id, int tigre, int direcao) throws RemoteException;
 	
 	/*7) posicionaCabra
 	 * ­Recebe: id do usuário (obtido através da chamada registraJogador) e posição do tabuleiro onde a

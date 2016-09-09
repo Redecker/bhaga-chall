@@ -63,7 +63,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		}
 
 		@Override
-		public String moveTigre(int id, int direcao) throws RemoteException {
+		public String moveTigre(int id, int tigre, int direcao) throws RemoteException {
 			// TODO Auto-generated method stub
 			return null;
 		}
