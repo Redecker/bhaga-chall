@@ -245,10 +245,33 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		 */
 		@Override
 		public String obtemGrade(int id) throws RemoteException {
+			if(jogadores[0] == null || jogadores[1] == null || id != 0 || id != 1){
+				return "";
+			}
 			//ver se o ID do jogador é valido se não retornar erro(string vazia)
-			
 			return tabuleiro.toStringForTests();
 		}
+		@Test
+		public void testObtemGrade() throws RemoteException {
+			BhagaChall bhaga = new BhagaChall();		
+			assertSame("", bhaga.obtemGrade(0));		
+			assertSame("", bhaga.obtemGrade(1));
+			assertSame(0, bhaga.registraJogador("Matheus"));
+			assertSame(1, bhaga.registraJogador("Carol"));
+			assertSame("1...2...............3...4", bhaga.obtemGrade(0));
+			assertSame("1...2...............3...4", bhaga.obtemGrade(1));
+			
+			
+			
+			
+			assertSame("", bhaga.obtemGrade(2));
+			assertSame("", bhaga.obtemGrade(10));
+			assertSame("", bhaga.obtemGrade(-1));
+			assertSame("", bhaga.obtemGrade(-10));
+			
+		}
+		
+		
 		/*6) moveTigre
 		 * Recebe: id do usuário (obtido através da chamada registraJogador) e direção relativa da jogada
 		 * (0 = para direita; 1 = para direita/abaixo; 2 = para baixo; 3 = para esquerda/abaixo; 4 = para
@@ -346,6 +369,9 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			assertSame("", bhaga.obtemOponente(2));
 			assertSame("", bhaga.obtemOponente(10));
 			assertSame("", bhaga.obtemOponente(100));
+			assertSame("", bhaga.obtemOponente(-1));
+			assertSame("", bhaga.obtemOponente(-10));
+			assertSame("", bhaga.obtemOponente(-100));
 		}
 }
 
