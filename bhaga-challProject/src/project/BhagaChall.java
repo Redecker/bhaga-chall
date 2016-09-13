@@ -17,6 +17,12 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			public Coordenada(){
 				x = new int[8];
 				y = new int[8];
+				
+				for(int i = 0; i < 8 ; i++){
+					x[i] = -1;
+					y[i] = -1;
+				}
+				
 			}
 			
 			public int[] getDirecao(int direcao){
@@ -40,7 +46,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			public String toString(){
 				String toReturn = "";
 				for(int i = 0; i < x.length ; i++){
-					toReturn += "d: " + i + " x: " + x[i] + " y: " + y[i];
+					toReturn += "d:" + i + " x:" + x[i] + " y:" + y[i] + "\n";
 				}
 				return toReturn;
 			}
@@ -101,8 +107,8 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		private Tabuleiro tabuleiro;
 		String[] jogadores;
 		int turno;
-		Coordenada[][] iniciaMovesSemPulo;
-		Coordenada[][] iniciaMovesComPulo;
+		Coordenada[][] movesSemPulo;
+		Coordenada[][] movesComPulo;
 		
 		int proximaCabra;
 		
@@ -125,7 +131,220 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		
 		//inicia as jogadas possiveis sem pulo
 		private void iniciaMovesSemPulo(){
+			//inicia a matrix
+			movesSemPulo = new Coordenada[5][5];
 			
+			//posição x=0 y=0
+			Coordenada zeroZero = new Coordenada();
+			zeroZero.setPosicao(0, 0, 1);
+			zeroZero.setPosicao(1, 1, 1);
+			zeroZero.setPosicao(2, 1, 0);
+			movesSemPulo[0][0] = zeroZero;
+			
+			//posição x=0 y=1
+			Coordenada zeroUm = new Coordenada();
+			zeroUm.setPosicao(0, 0, 2);
+			zeroUm.setPosicao(2, 1, 1);
+			zeroUm.setPosicao(4, 0, 0);
+			movesSemPulo[0][1] = zeroUm;
+			
+			//posição x=0 y=2
+			Coordenada zeroDois = new Coordenada();
+			zeroDois.setPosicao(0, 0, 3);
+			zeroDois.setPosicao(1, 1, 3);
+			zeroDois.setPosicao(2, 1, 2);
+			zeroDois.setPosicao(3, 1, 1);
+			zeroDois.setPosicao(4, 0, 1);
+			movesSemPulo[0][2] = zeroDois;
+			
+			//posição x=0 y=3
+			Coordenada zeroTres = new Coordenada();
+			zeroTres.setPosicao(0, 0, 4);
+			zeroTres.setPosicao(2, 1, 3);
+			zeroTres.setPosicao(4, 0, 2);
+			movesSemPulo[0][3] = zeroTres;
+			
+			//posição x=0 y=4
+			Coordenada zeroQuatro = new Coordenada();
+			zeroQuatro.setPosicao(2, 1, 4);
+			zeroQuatro.setPosicao(3, 1, 3);
+			zeroQuatro.setPosicao(4, 0, 3);
+			movesSemPulo[0][4] = zeroQuatro;
+			
+			//posição x=1 y=0
+			Coordenada umZero = new Coordenada();
+			umZero.setPosicao(0, 1, 1);
+			umZero.setPosicao(2, 2, 0);
+			umZero.setPosicao(6, 0, 0);
+			movesSemPulo[1][0] = umZero;
+			
+			//posição x=1 y=1
+			Coordenada umUm = new Coordenada();
+			umUm.setPosicao(0, 1, 2);
+			umUm.setPosicao(1, 2, 2);
+			umUm.setPosicao(2, 2, 1);	
+			umUm.setPosicao(3, 2, 0);
+			umUm.setPosicao(4, 1, 0);
+			umUm.setPosicao(5, 0, 0);
+			umUm.setPosicao(6, 0, 1);
+			umUm.setPosicao(7, 0, 2);
+			movesSemPulo[1][1] = umUm;
+			
+			//posição x=1 y=2
+			Coordenada umDois = new Coordenada();
+			umDois.setPosicao(0, 1, 3);
+			umDois.setPosicao(2, 2, 2);
+			umDois.setPosicao(4, 1, 1);	
+			umDois.setPosicao(6, 0, 2);
+			movesSemPulo[1][2] = umDois;
+			
+			//posição x=1 y=3
+			Coordenada umTres = new Coordenada();
+			umTres.setPosicao(0, 1, 4);
+			umTres.setPosicao(1, 2, 4);
+			umTres.setPosicao(2, 2, 3);	
+			umTres.setPosicao(3, 2, 2);
+			umTres.setPosicao(4, 1, 2);
+			umTres.setPosicao(5, 0, 2);
+			umTres.setPosicao(6, 0, 3);
+			umTres.setPosicao(7, 0, 4);
+			movesSemPulo[1][3] = umTres;
+			
+			//posição x=1 y=4
+			Coordenada umQuatro = new Coordenada();
+			umQuatro.setPosicao(2, 2, 4);
+			umQuatro.setPosicao(4, 1, 3);	
+			umQuatro.setPosicao(6, 0, 4);
+			movesSemPulo[1][4] = umQuatro;
+			
+			//posição x=2 y=0
+			Coordenada doisZero = new Coordenada();
+			doisZero.setPosicao(0, 2, 1);
+			doisZero.setPosicao(1, 3, 1);	
+			doisZero.setPosicao(2, 3, 0);
+			doisZero.setPosicao(6, 1, 0);
+			doisZero.setPosicao(7, 1, 1);
+			movesSemPulo[2][0] = doisZero;
+			
+			//posição x=2 y=1
+			Coordenada doisUm = new Coordenada();
+			doisUm.setPosicao(0, 2, 2);
+			doisUm.setPosicao(2, 3, 1);	
+			doisUm.setPosicao(4, 2, 0);
+			doisUm.setPosicao(6, 1, 1);
+			movesSemPulo[2][1] = doisUm;
+			
+			//posição x=2 y=2
+			Coordenada doisDois = new Coordenada();
+			doisDois.setPosicao(0, 2, 3);
+			doisDois.setPosicao(1, 3, 3);	
+			doisDois.setPosicao(2, 3, 2);
+			doisDois.setPosicao(3, 3, 1);
+			doisDois.setPosicao(4, 2, 1);
+			doisDois.setPosicao(5, 1, 1);
+			doisDois.setPosicao(6, 1, 2);
+			doisDois.setPosicao(7, 1, 3);
+			movesSemPulo[2][2] = doisDois;
+			
+			//posição x=2 y=3
+			Coordenada doisTres = new Coordenada();
+			doisTres.setPosicao(0, 2, 4);
+			doisTres.setPosicao(2, 3, 3);	
+			doisTres.setPosicao(4, 2, 2);
+			doisTres.setPosicao(6, 1, 3);
+			movesSemPulo[2][3] = doisTres;
+			
+			//posição x=2 y=4
+			Coordenada doisQuatro = new Coordenada();
+			doisQuatro.setPosicao(2, 3, 4);
+			doisQuatro.setPosicao(3, 3, 3);	
+			doisQuatro.setPosicao(4, 2, 3);
+			doisQuatro.setPosicao(5, 1, 3);
+			doisQuatro.setPosicao(6, 1, 4);
+			movesSemPulo[2][4] = doisQuatro;
+			
+			//posição x=3 y=0
+			Coordenada tresZero = new Coordenada();
+			tresZero.setPosicao(0, 3, 1);
+			tresZero.setPosicao(2, 4, 0);	
+			tresZero.setPosicao(6, 2, 0);
+			movesSemPulo[3][0] = tresZero;
+			
+			//posição x=3 y=1
+			Coordenada tresUm = new Coordenada();
+			tresUm.setPosicao(0, 3, 2);
+			tresUm.setPosicao(1, 4, 2);	
+			tresUm.setPosicao(2, 4, 1);
+			tresUm.setPosicao(3, 4, 0);
+			tresUm.setPosicao(4, 3, 0);	
+			tresUm.setPosicao(5, 2, 0);
+			tresUm.setPosicao(6, 2, 1);
+			tresUm.setPosicao(7, 2, 2);
+			movesSemPulo[3][1] = tresUm;
+			
+			//posição x=3 y=2
+			Coordenada tresDois = new Coordenada();
+			tresDois.setPosicao(0, 3, 3);
+			tresDois.setPosicao(2, 4, 2);	
+			tresDois.setPosicao(4, 3, 1);
+			tresDois.setPosicao(6, 2, 2);
+			movesSemPulo[3][2] = tresDois;
+			
+			//posição x=3 y=3
+			Coordenada tresTres = new Coordenada();
+			tresTres.setPosicao(0, 3, 4);
+			tresTres.setPosicao(1, 4, 4);	
+			tresTres.setPosicao(2, 4, 3);
+			tresTres.setPosicao(3, 4, 2);
+			tresTres.setPosicao(4, 3, 2);	
+			tresTres.setPosicao(5, 2, 2);
+			tresTres.setPosicao(6, 2, 3);
+			tresTres.setPosicao(7, 2, 4);
+			movesSemPulo[3][3] = tresTres;
+			
+			//posição x=3 y=4
+			Coordenada tresQuatro = new Coordenada();
+			tresQuatro.setPosicao(2, 4, 4);
+			tresQuatro.setPosicao(4, 3, 3);	
+			tresQuatro.setPosicao(6, 2, 4);
+			movesSemPulo[3][4] = tresQuatro;
+			
+			//posição x=4 y=0
+			Coordenada quatroZero = new Coordenada();
+			quatroZero.setPosicao(0, 4, 1);
+			quatroZero.setPosicao(6, 3, 0);	
+			quatroZero.setPosicao(7, 3, 1);
+			movesSemPulo[4][0] = quatroZero;
+			
+			//posição x=4 y=1
+			Coordenada quatroUm = new Coordenada();
+			quatroUm.setPosicao(0, 4, 2);
+			quatroUm.setPosicao(4, 4, 0);	
+			quatroUm.setPosicao(6, 3, 1);
+			movesSemPulo[4][1] = quatroUm;
+			
+			//posição x=4 y=2
+			Coordenada quatroDois = new Coordenada();
+			quatroDois.setPosicao(0, 4, 3);
+			quatroDois.setPosicao(4, 4, 1);	
+			quatroDois.setPosicao(5, 3, 1);
+			quatroDois.setPosicao(6, 3, 2);	
+			quatroDois.setPosicao(7, 3, 3);
+			movesSemPulo[4][2] = quatroDois;
+			
+			//posição x=4 y=3
+			Coordenada quatroTres = new Coordenada();
+			quatroTres.setPosicao(0, 4, 4);
+			quatroTres.setPosicao(4, 4, 2);	
+			quatroTres.setPosicao(6, 3, 3);
+			movesSemPulo[4][3] = quatroTres;
+			
+			//posição x=4 y=4
+			Coordenada quatroQuatro = new Coordenada();
+			quatroQuatro.setPosicao(4, 4, 3);
+			quatroQuatro.setPosicao(5, 3, 3);	
+			quatroQuatro.setPosicao(6, 3, 4);
+			movesSemPulo[4][4] = quatroQuatro;
 		}
 		
 		//inicia as jogadaspossiveis com pulo
@@ -138,6 +357,8 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			BhagaChall bc = new BhagaChall();
 			
 			bc.tabuleiro.toStringForTests();
+			
+			System.out.println(bc.movesSemPulo[4][4].toString());
 		}
 		
 		//verifica se alguem ganhou
@@ -294,7 +515,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			assertSame(-2, bhaga.ehMinhaVez(0));
 			assertSame(1, bhaga.registraJogador("Carol"));
 			assertSame(1, bhaga.ehMinhaVez(0));
-			bhaga.turno = 1; //fazer algum movimento para trocar o turno
+			bhaga.turno = 1;
 			assertSame(1, bhaga.ehMinhaVez(1));
 			//cenario de ganhar o jogo para cabras
 			assertSame(2, bhaga.ehMinhaVez(0));
@@ -400,17 +621,52 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			if(x > 4 || x < 0 || y > 4 || y < 0 || tabuleiro.getPosicao(x, y) != '.'){
 				return 0;
 			}
-			//deu tudo certo faz a jogada e retorna
+			//deu tudo certo faz a jogada, atualiza o turno e retorna 1
 			tabuleiro.setPosicao(x, y, (char)proximaCabra++);
+			turno = 1;
 			return 1;
 			
 		}
 		@Test
 		public void testPosicionaCabra() throws RemoteException {
 			BhagaChall bhaga = new BhagaChall();	
+			
+			assertSame(-2, bhaga.posicionaCabra(0, 0, 0));			
 			assertSame(0, bhaga.registraJogador("Matheus"));
+			assertSame(-2, bhaga.posicionaCabra(0, 0, 0));
 			assertSame(1, bhaga.registraJogador("Carol"));
-			//completar
+
+			assertSame(-1, bhaga.posicionaCabra(-10, 0, 0));
+			assertSame(-1, bhaga.posicionaCabra(-1, 0, 0));
+			assertSame(-1, bhaga.posicionaCabra(2, 0, 0));
+			assertSame(-1, bhaga.posicionaCabra(10, 0, 0));
+
+			assertSame(-4, bhaga.posicionaCabra(1, 0, 0));
+			
+			//jogada do trigre
+			bhaga.turno = 1;
+			assertSame(-3, bhaga.posicionaCabra(0, 0, 0));
+			bhaga.turno = 0;
+			
+			//adicionar todas as cabras
+			bhaga.proximaCabra = 85;
+			assertSame(-5, bhaga.posicionaCabra(0, 0, 0));
+			bhaga.proximaCabra = 65;
+			
+			assertSame(0, bhaga.posicionaCabra(0, 5, 0));
+			assertSame(0, bhaga.posicionaCabra(0, -1, 0));
+			assertSame(0, bhaga.posicionaCabra(0, 0, 5));
+			assertSame(0, bhaga.posicionaCabra(0, 0, -1));
+			assertSame(0, bhaga.posicionaCabra(0, 4, 0));
+			assertSame(0, bhaga.posicionaCabra(0, 4, 4));
+			
+			assertSame(1, bhaga.posicionaCabra(0, 2, 2));
+			assertEquals("1...2.......A.......3...4", bhaga.obtemGrade(0));
+			assertSame(1, bhaga.turno);
+			bhaga.turno = 0;
+			assertSame(1, bhaga.posicionaCabra(0, 3, 3));
+			assertEquals("1...2.......A.....B.3...4", bhaga.obtemGrade(0));
+			assertSame(1, bhaga.turno);
 		}		
 		
 		/*8) moveCabra
