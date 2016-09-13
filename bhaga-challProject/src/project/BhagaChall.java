@@ -10,12 +10,46 @@ import org.junit.Test;
 
 public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterface {
 
-		private static final long serialVersionUID = -513804057617910473L;
-		
+		public class Coordenada{			
+			int[] x;
+			int[] y;
+			
+			public Coordenada(){
+				x = new int[8];
+				y = new int[8];
+			}
+			
+			public int[] getDirecao(int direcao){
+				if(direcao >= 0 && direcao <= 7){
+					int[] toReturn = new int[2];
+					toReturn[0] = x[direcao];
+					toReturn[1] = y[direcao];
+					
+					return toReturn;
+				}
+				return null;
+			}
+			
+			public void setPosicao(int direcao, int x, int y){
+				if((x >= 0 && x <= 4) && (y >= 0 && y <= 4)){
+					this.x[direcao] = x;
+					this.y[direcao] = y;
+				}
+			}
+			
+			public String toString(){
+				String toReturn = "";
+				for(int i = 0; i < x.length ; i++){
+					toReturn += "d: " + i + " x: " + x[i] + " y: " + y[i];
+				}
+				return toReturn;
+			}
+		}
+	
 		public class Tabuleiro{
 			
 			char[][] board;
-						
+			
 			public Tabuleiro(){
 				board = new char[5][5];
 				startBoard();
@@ -30,11 +64,16 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			}
 			
 			public char getPosicao(int x, int y){
-				return board[x][y];
+				if((x >= 0 && x <= 4) && (y >= 0 && y <= 4)){
+					return board[x][y];
+				}
+				return ' ';
 			}
 			
 			public void setPosicao(int x, int y, char content){
-				board[x][y] = content;
+				if((x >= 0 && x <= 4) && (y >= 0 && y <= 4)){
+					board[x][y] = content;
+				}
 			}
 			
 			public String toString(){
@@ -56,13 +95,14 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 					toReturn += "\n";
 				}
 				return toReturn;
-			}
-			
+			}			
 		}
 
 		private Tabuleiro tabuleiro;
 		String[] jogadores;
 		int turno;
+		Coordenada[][] iniciaMovesSemPulo;
+		Coordenada[][] iniciaMovesComPulo;
 		
 		int proximaCabra;
 		
@@ -78,6 +118,19 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			turno = 0;
 			
 			proximaCabra = 65;
+			
+			iniciaMovesSemPulo();
+			iniciaMovesComPulo();
+		}
+		
+		//inicia as jogadas possiveis sem pulo
+		private void iniciaMovesSemPulo(){
+			
+		}
+		
+		//inicia as jogadaspossiveis com pulo
+		private void iniciaMovesComPulo(){
+			
 		}
 		
 		public static void main(String[] args) throws RemoteException{
