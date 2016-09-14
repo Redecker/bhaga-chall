@@ -83,7 +83,7 @@ public interface BhagaChallInterface extends Remote {
 	 * ­­3 (não é a vez do jogador), ­4 (não está jogando com o animal correto), ­5 (ainda não está na
 	 * ­fase de movimentação de cabras) ou ­6 (direção inválida).
 	 */	
-	public String moveCabra(int id, String cabra, int direcao) throws RemoteException;
+	public int moveCabra(int id, int cabra, int direcao) throws RemoteException;
 	
 	/*9) obtemOponente
  	 * Recebe: id do usuário (obtido através da chamada registraJogador)

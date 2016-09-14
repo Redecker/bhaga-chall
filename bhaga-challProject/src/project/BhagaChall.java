@@ -82,6 +82,37 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 				}
 			}
 			
+			public int[] findTigre(int tigre){
+				int[] xy = new int[2];
+				System.out.println(tigre);
+				System.out.println((char)tigre);
+				for(int i = 0; i < board[0].length; i++){
+					for(int j = 0; j < board[0].length ; j++){
+						if(board[i][j] == (char) tigre){
+							xy[0] = i; 
+							xy[1] = j;
+							return xy;
+						}
+					}
+				}
+				return null;
+			}
+			
+			public int[] findCabra(int cabra) {
+				int[] xy = new int[2];
+				
+				for(int i = 0; i < board[0].length; i++){
+					for(int j = 0; j < board[0].length ; j++){
+						if(board[i][j] == cabra){
+							xy[0] = i; 
+							xy[1] = j;
+							return xy;
+						}
+					}
+				}
+				return null;
+			}		
+			
 			public String toString(){
 				String toReturn = "";
 				for(int i = 0; i < board[0].length ; i++){
@@ -101,7 +132,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 					toReturn += "\n";
 				}
 				return toReturn;
-			}			
+			}	
 		}
 
 		private Tabuleiro tabuleiro;
@@ -349,16 +380,210 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		
 		//inicia as jogadaspossiveis com pulo
 		private void iniciaMovesComPulo(){
+			//inicia a matrix
+			movesComPulo = new Coordenada[5][5];
 			
+			//posição x=0 y=0
+			Coordenada zeroZero = new Coordenada();
+			zeroZero.setPosicao(0, 0, 2);
+			zeroZero.setPosicao(1, 2, 2);
+			zeroZero.setPosicao(2, 2, 0);
+			movesComPulo[0][0] = zeroZero;
+			
+			//posição x=0 y=1
+			Coordenada zeroUm = new Coordenada();
+			zeroUm.setPosicao(0, 0, 3);
+			zeroUm.setPosicao(2, 2, 1);
+			movesComPulo[0][1] = zeroUm;
+			
+			//posição x=0 y=2
+			Coordenada zeroDois = new Coordenada();
+			zeroDois.setPosicao(0, 0, 4);
+			zeroDois.setPosicao(1, 2, 4);
+			zeroDois.setPosicao(2, 2, 2);
+			zeroDois.setPosicao(3, 2, 0);
+			zeroDois.setPosicao(4, 0, 0);
+			movesComPulo[0][2] = zeroDois;
+			
+			//posição x=0 y=3
+			Coordenada zeroTres = new Coordenada();
+			zeroTres.setPosicao(2, 2, 3);
+			zeroTres.setPosicao(4, 0, 1);
+			movesComPulo[0][3] = zeroTres;
+			
+			//posição x=0 y=4
+			Coordenada zeroQuatro = new Coordenada();
+			zeroQuatro.setPosicao(2, 2, 4);
+			zeroQuatro.setPosicao(3, 2, 2);
+			zeroQuatro.setPosicao(4, 0, 2);
+			movesComPulo[0][4] = zeroQuatro;
+			
+			//posição x=1 y=0
+			Coordenada umZero = new Coordenada();
+			umZero.setPosicao(0, 1, 2);
+			umZero.setPosicao(2, 3, 0);
+			movesComPulo[1][0] = umZero;
+			
+			//posição x=1 y=1
+			Coordenada umUm = new Coordenada();
+			umUm.setPosicao(0, 1, 3);
+			umUm.setPosicao(1, 3, 3);
+			umUm.setPosicao(2, 3, 1);
+			movesComPulo[1][1] = umUm;
+			
+			//posição x=1 y=2
+			Coordenada umDois = new Coordenada();
+			umDois.setPosicao(0, 1, 4);
+			umDois.setPosicao(2, 3, 2);
+			umDois.setPosicao(4, 1, 0);
+			movesComPulo[1][2] = umDois;
+			
+			//posição x=1 y=3
+			Coordenada umTres = new Coordenada();
+			umTres.setPosicao(2, 3, 3);
+			umTres.setPosicao(3, 3, 1);
+			umTres.setPosicao(4, 1, 1);
+			movesComPulo[1][3] = umTres;
+			
+			//posição x=1 y=4
+			Coordenada umQuatro = new Coordenada();
+			umQuatro.setPosicao(2, 3, 4);
+			umQuatro.setPosicao(4, 1, 2);
+			movesComPulo[1][4] = umQuatro;
+			
+			//posição x=2 y=0
+			Coordenada doisZero = new Coordenada();
+			doisZero.setPosicao(0, 2, 2);
+			doisZero.setPosicao(1, 4, 2);
+			doisZero.setPosicao(2, 4, 0);
+			doisZero.setPosicao(6, 0, 0);
+			doisZero.setPosicao(7, 0, 2);
+			movesComPulo[2][0] = doisZero;
+			
+			//posição x=2 y=1
+			Coordenada doisUm = new Coordenada();
+			doisUm.setPosicao(0, 2, 3);
+			doisUm.setPosicao(2, 4, 1);
+			doisUm.setPosicao(6, 0, 1);
+			movesComPulo[2][1] = doisUm;
+			
+			//posição x=2 y=2
+			Coordenada doisDois = new Coordenada();
+			doisDois.setPosicao(0, 2, 4);
+			doisDois.setPosicao(1, 4, 4);
+			doisDois.setPosicao(2, 4, 2);
+			doisDois.setPosicao(3, 4, 0);
+			doisDois.setPosicao(4, 2, 0);
+			doisDois.setPosicao(5, 0, 0);
+			doisDois.setPosicao(6, 0, 2);
+			doisDois.setPosicao(7, 0, 4);
+			movesComPulo[2][2] = doisDois;
+			
+			//posição x=2 y=3
+			Coordenada doisTres = new Coordenada();
+			doisTres.setPosicao(2, 4, 3);
+			doisTres.setPosicao(4, 2, 1);
+			doisTres.setPosicao(6, 0, 3);
+			movesComPulo[2][3] = doisTres;
+			
+			//posição x=2 y=4
+			Coordenada doisQuatro = new Coordenada();
+			doisQuatro.setPosicao(2, 4, 4);
+			doisQuatro.setPosicao(3, 4, 2);
+			doisQuatro.setPosicao(4, 2, 2);
+			doisQuatro.setPosicao(5, 0, 2);
+			doisQuatro.setPosicao(6, 0, 4);
+			movesComPulo[2][4] = doisQuatro;
+			
+			//posição x=3 y=0
+			Coordenada tresZero = new Coordenada();
+			tresZero.setPosicao(0, 3, 2);
+			tresZero.setPosicao(6, 1, 0);
+			movesComPulo[3][0] = tresZero;
+			
+			//posição x=3 y=1
+			Coordenada tresUm = new Coordenada();
+			tresUm.setPosicao(0, 3, 3);
+			tresUm.setPosicao(6, 1, 1);
+			tresUm.setPosicao(7, 1, 3);
+			movesComPulo[3][1] = tresUm;
+			
+			//posição x=3 y=2
+			Coordenada tresDois = new Coordenada();
+			tresDois.setPosicao(0, 3, 4);
+			tresDois.setPosicao(4, 3, 0);
+			tresDois.setPosicao(6, 1, 2);
+			movesComPulo[3][2] = tresDois;
+			
+			//posição x=3 y=3
+			Coordenada tresTres = new Coordenada();
+			tresTres.setPosicao(4, 3, 1);
+			tresTres.setPosicao(5, 1, 1);
+			tresTres.setPosicao(6, 1, 3);
+			movesComPulo[3][3] = tresTres;
+			
+			//posição x=3 y=4
+			Coordenada tresQuatro = new Coordenada();
+			tresQuatro.setPosicao(4, 3, 2);
+			tresQuatro.setPosicao(6, 1, 4);
+			movesComPulo[3][4] = tresQuatro;
+			
+			//posição x=4 y=0
+			Coordenada quatroZero = new Coordenada();
+			quatroZero.setPosicao(0, 4, 2);
+			quatroZero.setPosicao(6, 2, 0);
+			quatroZero.setPosicao(7, 2, 2);
+			movesComPulo[4][0] = quatroZero;
+			
+			//posição x=4 y=1
+			Coordenada quatroUm = new Coordenada();
+			quatroUm.setPosicao(0, 4, 3);
+			quatroUm.setPosicao(6, 2, 2);
+			movesComPulo[4][1] = quatroUm;
+			
+			//posição x=4 y=2
+			Coordenada quatroDois = new Coordenada();
+			quatroDois.setPosicao(0, 4, 4);
+			quatroDois.setPosicao(4, 4, 0);
+			quatroDois.setPosicao(5, 2, 0);
+			quatroDois.setPosicao(6, 2, 2);
+			quatroDois.setPosicao(7, 2, 4);
+			movesComPulo[4][2] = quatroDois;
+			
+			//posição x=4 y=3
+			Coordenada quatroTres = new Coordenada();
+			quatroTres.setPosicao(4, 4, 1);
+			quatroTres.setPosicao(6, 2, 3);
+			movesComPulo[4][3] = quatroTres;
+		
+			//posição x=4 y=4
+			Coordenada quatroQuatro = new Coordenada();
+			quatroQuatro.setPosicao(4, 4, 2);
+			quatroQuatro.setPosicao(5, 2, 2);
+			quatroQuatro.setPosicao(6, 2, 4);
+			movesComPulo[4][4] = quatroQuatro;
 		}
 		
 		public static void main(String[] args) throws RemoteException{
 
 			BhagaChall bc = new BhagaChall();
+			bc.registraJogador("Matheus");
+			bc.registraJogador("Carol");
+
+			System.out.println(bc.tabuleiro.toStringForTests());
+
+			System.out.println("Começou");
+			System.out.println(bc.posicionaCabra(0, 2, 2));
+			System.out.println(bc.tabuleiro.toStringForTests());
 			
-			bc.tabuleiro.toStringForTests();
+			System.out.println(bc.moveTigre(1, 4, 6));
+			System.out.println(bc.tabuleiro.toStringForTests());
 			
-			System.out.println(bc.movesSemPulo[4][4].toString());
+			System.out.println(bc.posicionaCabra(0, 0, 1));
+			System.out.println(bc.tabuleiro.toStringForTests());
+			
+			System.out.println(bc.moveTigre(1, 1, 0));
+			System.out.println(bc.tabuleiro.toStringForTests());
 		}
 		
 		//verifica se alguem ganhou
@@ -368,7 +593,20 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		private int vencedor(int id){
 			return 0;
 		}
-		
+		private boolean temCabra(int x, int y){
+			if(tabuleiro.getPosicao(x, y) >= 1 && tabuleiro.getPosicao(x, y) <= 4 ){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		private boolean temTigre(int x, int y) {
+			if(tabuleiro.getPosicao(x, y) >= 65 && tabuleiro.getPosicao(x, y) <= 84 ){
+				return true;
+			}else{
+				return false;
+			}
+		}
 		/* 1)registraJogador
 	 	* Recebe: string com o nome do usuário/jogador
 	 	* Retorna: id (valor inteiro) do usuário (que corresponde a um número de identificação único para
@@ -450,10 +688,11 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			//se ainda não tem partida
 			if(jogadores[0] == null || jogadores[1] == null){
 				return 0;
-			}			
+			}//se o jogador joga com as cabras
 			if(id == 0){
 				return 1;
-			}else if(id == 1){
+			}//se o jogador joga com os tigres
+			else if(id == 1){
 				return 2;
 			}else{
 				//se erro retorna -1
@@ -579,8 +818,55 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		 */
 		@Override
 		public int moveTigre(int id, int tigre, int direcao) throws RemoteException {
-			// TODO Auto-generated method stub
-			return 0;
+			//esta jogando com as cabras
+			if(id == 0){
+				return -4;
+			}//não é a vez dos tigres jogarem
+			else if	(ehMinhaVez(id) == 0){
+				return -3;
+			}// se ainda não tem partida
+			else if(temPartida(id) == 0){
+				return -2;
+			}
+			int[] posicaoTigre = tabuleiro.findTigre(tigre+48);
+			if(posicaoTigre != null){
+				System.out.println();
+				Coordenada movimento = movesSemPulo[posicaoTigre[0]][posicaoTigre[1]];
+				int[] movimentoTigreSemPulo = movimento.getDirecao(direcao);
+				//movimento invalido ou se tem um tigre na posicao que deseja ir se tiver retorna movimento invalido
+				if(movimentoTigreSemPulo[0] == -1 || temTigre(movimentoTigreSemPulo[0], movimentoTigreSemPulo[1])){
+					return -5;
+				}//se o tabuleiro tah livre movimenta o tigre para essa posicao
+				else if(tabuleiro.getPosicao(movimentoTigreSemPulo[0], movimentoTigreSemPulo[1]) == '.'){
+					//tira a posição do tigre
+					tabuleiro.setPosicao(posicaoTigre[0], posicaoTigre[1], '.');
+					//adiciona ele no novo lugar
+					tabuleiro.setPosicao(movimentoTigreSemPulo[0], movimentoTigreSemPulo[1], (char)tigre);
+					turno = 0;
+					return 1;
+				}//verifica se tem uma cabra na posição que deseja ir
+				else if(temCabra(movimentoTigreSemPulo[0], movimentoTigreSemPulo[1])){
+					//tem uma cabra então tenta pular
+					movimento = movesComPulo[posicaoTigre[0]][posicaoTigre[1]];
+					int[] movimentoTigreComPulo = movimento.getDirecao(direcao);
+					//se nao da pra pular retorna movimento invalido, caso tenha cabra ou tigre ali ou não tenha essa chance de pular
+					if(movimentoTigreComPulo[0] == -1 || temCabra(movimentoTigreComPulo[0], movimentoTigreComPulo[1]) || temTigre(movimentoTigreComPulo[0], movimentoTigreComPulo[1])){
+						return -5;
+					}//se tem a possibilidade de pular
+					else{
+						//tira a posicao do tigre
+						tabuleiro.setPosicao(posicaoTigre[0], posicaoTigre[1], '.');
+						//tira a cabra
+						tabuleiro.setPosicao(movimentoTigreSemPulo[0], movimentoTigreSemPulo[1], '.');
+						//coloca o tigre na posicao do pulo										//COM PROBLEMA AQUI!!!!!!!!!!!!!!!!!!!
+						tabuleiro.setPosicao(movimentoTigreComPulo[0], movimentoTigreComPulo[1], (char)(tigre+48));
+						//atualiza o turno
+						turno = 0;
+						return 1;
+					}
+				}	
+			}
+			return -1;
 		}
 		@Test
 		public void testMoveTigre() throws RemoteException {
@@ -682,9 +968,38 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		 * ­fase de movimentação de cabras) ou ­-6 (direção inválida).
 		 */	
 		@Override
-		public String moveCabra(int id, String cabra, int direcao) throws RemoteException {
-			// TODO Auto-generated method stub
-			return null;
+		public int moveCabra(int id, int cabra, int direcao) throws RemoteException {
+			//esta jogando com os tigres
+			if(id == 1){
+				return -4;
+			}//não é a vez das cabras jogarem
+			else if	(ehMinhaVez(id) == 0){
+				return -3;
+			}// se ainda não tem partida
+			else if(temPartida(id) == 0){
+				return -2;
+			}else if(proximaCabra > 84){
+				return -5;
+			}
+			int[] posicaoCabra = tabuleiro.findCabra(cabra);
+			if(posicaoCabra != null){
+				Coordenada movimento = movesSemPulo[posicaoCabra[0]][posicaoCabra[1]];
+				int[] movimentoCabra = movimento.getDirecao(direcao);
+				//movimento invalido ou se tem um tigre ou uma cabra na posicao que deseja ir retorna movimento invalido
+				if(movimentoCabra[0] == -1 || temTigre(movimentoCabra[0], movimentoCabra[1]) || temCabra(movimentoCabra[0], movimentoCabra[1])){
+					return -6;
+				}//se o tabuleiro tah livre movimenta o tigre para essa posicao
+				else if(tabuleiro.getPosicao(movimentoCabra[0], movimentoCabra[1]) == '.'){
+					//tira a posição da cabra
+					tabuleiro.setPosicao(movimentoCabra[0], movimentoCabra[1], '.');
+					//adiciona ela no novo lugar
+					tabuleiro.setPosicao(movimentoCabra[0], movimentoCabra[1], (char)cabra);
+					//atualiza o turno
+					turno = 1;
+					return 1;
+				}	
+			}
+			return -1;
 		}
 		@Test
 		public void testMoveCabra() throws RemoteException {
