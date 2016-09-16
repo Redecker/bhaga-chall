@@ -10,8 +10,9 @@ public class BhagaChallClient {
 			System.exit(1);
 		}
 		try {
-			//Logica do jogo
 			BhagaChallInterface bhagaChall = (BhagaChallInterface)Naming.lookup("//"+args[0]+"/BhagaChall");
+			//Logica do jogo
+			bhagaChall.registraJogador(args[1]);
 			
 		} catch (Exception e) {
 			System.out.println ("BhagaChallClient failed.");

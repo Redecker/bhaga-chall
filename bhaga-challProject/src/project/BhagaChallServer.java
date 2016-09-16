@@ -12,7 +12,7 @@ public class BhagaChallServer {
 			System.out.println("RMI registry already running.");			
 		}
 		try {
-			Naming.rebind ("Bhaga-Chall", new BhagaChall());
+			Naming.rebind ("BhagaChall", new BhagaChallImpl(50));
 			System.out.println ("BhagaChallServer is ready.");
 		} catch (Exception e) {
 			System.out.println ("BhagaChallServer failed:");

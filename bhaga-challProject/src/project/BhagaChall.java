@@ -137,14 +137,15 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		}
 
 		private Tabuleiro tabuleiro;
-		String[] jogadores;
-		int turno;
-		Coordenada[][] movesSemPulo;
-		Coordenada[][] movesComPulo;
-		
-		int proximaCabra;
-		
-		int cabrasCapturadas;
+		private String[] jogadores;
+		private int turno;
+		private Coordenada[][] movesSemPulo;
+		private Coordenada[][] movesComPulo;
+		private int proximaCabra;
+		private int cabrasCapturadas;
+		private static int ID = 0;
+		private int IDCabra;
+		private int IDTigre;
 		
 		public BhagaChall() throws RemoteException{			
 			tabuleiro = new Tabuleiro();
@@ -152,15 +153,10 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			tabuleiro.setPosicao(0, 4, '2');
 			tabuleiro.setPosicao(4, 0, '3');
 			tabuleiro.setPosicao(4, 4, '4');
-			
-			jogadores = new String[2];
-		
-			turno = 0;
-			
-			proximaCabra = 65;
-			
-			cabrasCapturadas = 0;
-			
+			jogadores = new String[2];		
+			turno = 0;			
+			proximaCabra = 65;			
+			cabrasCapturadas = 0;			
 			iniciaMovesSemPulo();
 			iniciaMovesComPulo();
 		}
@@ -675,14 +671,15 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		public int registraJogador(String nome) throws RemoteException {			
 			//retorna id do jogador
 			if(jogadores[0] == null){
-				if(jogadores[1] != null && jogadores[1].equals(nome)) return -1; 
 				jogadores[0] = nome;
-				return 0;					
+				IDCabra = ID++;
+				return IDCabra;					
 			}else if(jogadores[1] == null){
 				//se o usuario já esta cadastrado retorna -1		
 				if(jogadores[0].equals(nome)) return -1; 
 				jogadores[1] = nome;
-				return 1;
+				IDTigre = ID++;
+				return IDTigre;
 			}
 			//se não tem mais espaço pra jogar
 			else{
@@ -705,14 +702,16 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			assertSame(-2, bhaga.registraJogador("Valnei"));
 		}
 		
+		//para implementar o temporizador utilizar thread que verifica de um em um segundo e quando atingir trinta encerra
 		/* 2) encerraPartida
 		 * Recebe: id do usuário (obtido através da chamada registraJogador)
-		 * Retorna: -­1 (erro), 0 (ok) 
+		 * Retorna: -­1 (erro), 0 (ok) || zera os dados da partida e o jogador adversario ganha por wo 
 		 */
 		@Override
 		public int encerraPartida(int id) throws RemoteException {
 			if(id == 0){
 				jogadores[0] = null;
+				//zerar o jogo
 				return 0;
 			}else if(id == 1){
 				jogadores[1] = null;
