@@ -1,22 +1,25 @@
-all:			NotasClient.class NotasServer.class \
-			Notas.class NotasInterface.class
+all: BhagaChallInterface.class BhagaChall.class BhagaChallImpl.class \
+     BhagaChallClient.class BhagaChallServer.class			  
 
-Notas.class:		Notas.java NotasInterface.class
-			@javac Notas.java
+BhagaChallInterface.class: BhagaChallInterface.java
+			@javac BhagaChallInterface.java
 
-NotasInterface.class:	NotasInterface.java
-			@javac NotasInterface.java
+BhagaChall.class: BhagaChall.java
+		  @javac BhagaChall.java
 
-NotasClient.class:	NotasClient.java
-			@javac NotasClient.java
+BhagaChallImpl.class: BhagaChallImpl.java BhagaChallInterface.class
+			@javac BhagaChallImpl.java
 
-NotasServer.class:	NotasServer.java
-			@javac NotasServer.java
+BhagaChallServer.class:	BhagaChallServer.java
+			@javac BhagaChallServer.java
+
+BhagaChallClient.class:	BhagaChallClient.java
+			@javac BhagaChallClient.java
 
 run:			all
-			@java NotasServer &
+			@java BhagaChallServer &
 			@sleep 1
-			@java NotasClient
+			@java BhagaChallClient
 
 clean:
 			@rm -f *.class *~
