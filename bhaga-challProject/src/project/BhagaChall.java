@@ -144,18 +144,16 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			private String nome;
 			//0 cabra 1 tigre
 			private int jogador;
-			//-1 se não tem wo, 0 se eu dei wo, 1 se deram wo em mim
-			private int wo;
+			
+			//private long tempoInicio;
+			
+			//private long tempoJogada;
 			
 			public Jogador(int id, String n, int jogo){
 				ID = id;
 				nome = n;
 				jogador = jogo;
-				wo = -1;;
-			}
-			
-			public int getWO(){
-				return wo;
+				//tempoJogada = 0;
 			}
 			
 			public int getID(){
@@ -685,6 +683,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			//retorna id do jogador
 			if(jogadores[0] == null){
 				jogadores[0] = new Jogador(ID++,nome,0);
+				//jogadores[0].tempoInicio = System.currentTimeMillis();
 				return jogadores[0].getID();					
 			}else if(jogadores[1] == null){
 				//se o usuario já esta cadastrado retorna -1		
@@ -716,12 +715,8 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		@Override
 		public int encerraPartida(int id) throws RemoteException {
 			if(jogadores[0].getID() == id){
-				jogadores[0].wo = 0;
-				jogadores[1].wo = 1;
 				return 0;
 			}else if(jogadores[1].getID() == id){
-				jogadores[0].wo = 1;
-				jogadores[1].wo = 0;
 				return 0;
 			}
 			return -1;
@@ -730,7 +725,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		public void testEncerraPartida() throws RemoteException {
 			BhagaChall bhaga = new BhagaChall();		
 			int idM = bhaga.registraJogador("Matheus");
-			int idC = bhaga.registraJogador("Carol");
+			bhaga.registraJogador("Carol");
 			
 			assertSame(0, bhaga.encerraPartida(idM));
 			assertSame(null, bhaga.jogadores[0]);
@@ -745,14 +740,20 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		 */
 		@Override
 		public int temPartida(int id) throws RemoteException {
-			//tempo de espera esgotado retorna -2
+			
+			Jogador player = getJogador(id);
+			if(player == null){return -1;}	
+			
+//			//tempo de espera esgotado retorna -2
+//			if(System.currentTimeMillis() - player.tempoInicio > 120*1000){
+//				return -2;
+//			}
 			
 			//se ainda não tem partida
 			if(jogadores[0] == null || jogadores[1] == null){
 				return 0;
-			}
-			Jogador player = getJogador(id);
-			if(player == null){return -1;}			
+			}			
+					
 			//se o jogador joga com as cabras
 			if(player.getMove() == 0){
 				return 1;
@@ -794,24 +795,38 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 				return -2;
 			}
 			if(vencedor(id) != -1){
-				if(vencedor(id) == 1) return 2;
-				if(vencedor(id) == 0) return 3;
+				if(vencedor(id) == 1){
+					return 2;
+				}
+				if(vencedor(id) == 0){
+					return 3;
+				}
 			}
 			
 			Jogador player = getJogador(id);
-			if(player == null){return -1;}	
-			
-			//wo
-			if(player.getWO() == 1){
-				return 5;
-			}else if(player.getWO() == 0){
-				return 6;
-			}
-			
+			if(player == null){return -1;}			
+						
 			if(player.getMove() == turno){
+//				if(player.tempoJogada != 0) player.tempoJogada = System.currentTimeMillis();
+//				if(System.currentTimeMillis() - player.tempoJogada > 30 * 100){
+//					return 6;
+//				}
 				return 1;
 			}//se não for meu turno retorno 0
 			else if(player.getMove() != turno && (player.getMove() == 1 || player.getMove() == 0)){
+				
+//				if(jogadores[0].equals(player)){
+//					System.out.println(System.currentTimeMillis() + " : " + jogadores[1].tempoJogada);
+//					if(System.currentTimeMillis() - jogadores[1].tempoJogada > 30 * 100){
+//						return 5;
+//					}
+//				}else if(jogadores[1].equals(player)){
+//					System.out.println(System.currentTimeMillis() + " : " + jogadores[1].tempoJogada);
+//					if(System.currentTimeMillis() - jogadores[0].tempoJogada > 30 * 100){
+//						return 5;
+//					}
+//				}
+				
 				return 0;
 			}//erro retorna -1
 			return -1;
@@ -928,6 +943,9 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			}//não é a vez dos tigres jogarem
 			else if	(ehMinhaVez(id) == 0){
 				return -3;
+			}
+			if(tigre < 1 || tigre > 4){
+				return -1;
 			}
 			
 			int[] posicaoTigre = tabuleiro.findTigre(tigre+48);

@@ -1,5 +1,6 @@
 package project;
 
+
 import java.rmi.Naming;
 import java.util.Scanner;
 
@@ -48,6 +49,10 @@ public class BhagaChallClient {
 					case -1:
 						System.out.println("<<ERRO | temPartida>>");
 						return;
+					case -2:
+						bhagaChall.encerraPartida(id);
+						System.out.println("Tempo de espera esgotado, tente jogar novamente.");
+						return;
 				}
 				
 				if(jogador == 0){
@@ -58,97 +63,101 @@ public class BhagaChallClient {
 					System.out.println("As direções varias de 0 a 7");
 					System.out.println("O tabuleiro é composto de 0 até 4 em x, e 0 até 4 em y");
 					System.out.println("Para mais informações, porfavor, ver o enunciado do trabalho");
-				}
-				else if(jogador == 1){
+				}else if(jogador == 1){
 					System.out.println("Você está jogando com os tigres.");
 					System.out.println("Os tigres são identificados de 1 a 4");
 					System.out.println("Você deve tentar capturar as cabras, pulando sobre elas, escolhendo um tigre e uma direção");
 					System.out.println("As direções varias de 0 a 7");
 					System.out.println("O tabuleiro é composto de 0 até 4 em x, e 0 até 4 em y");
 					System.out.println("Para mais informações, porfavor, ver o enunciado do trabalho");
-				}
-				else{
+				}else{
+					bhagaChall.encerraPartida(id);
 					System.out.println("<<ERRO | jogador>> Reinicie o jogo.");
 				}
 				
 				System.out.println("O seu adversario é: " + bhagaChall.obtemOponente(id));
 				break;
 			}
-				while(true){
-					switch(bhagaChall.ehMinhaVez(id)){
-						//se não for minha vez
-						case 0:
-							continue;
-						//se for minha vez
-						case 1:
-							//se sou cabra
-							if(jogador == 0){
-								System.out.println("Turno: " + turno++ + " " + args[1] + " vS " + bhagaChall.obtemOponente(id));
+			
+			while(true){
+				switch(bhagaChall.ehMinhaVez(id)){
+					//se não for minha vez
+					case 0:
+						continue;
+					//se for minha vez
+					case 1:
+						//se sou cabra
+						if(jogador == 0){
+							try{
+								System.out.println("Turno: " + turno + " " + args[1] + " vS " + bhagaChall.obtemOponente(id));
 								printTabuleiro(bhagaChall.obtemGrade(id));
-								
+							
 								//se todas as cabras já foram posicionadas
 								if(cabras == 0){
 									System.out.println("Movimente uma cabra, informando a cabra e a direção, nesse formato: Cabra-Direção");
 									String coordenada = leitor.nextLine();
-									String[] xy = coordenada.split("-");
-									
-									//testar o que acontece se não colocar um número provavelmente uma exeção dai tratar ela
-									try{
-										switch(bhagaChall.moveCabra(id, (int)xy[0].charAt(0), Integer.parseInt(xy[1]))){
-											case 1:
-												turno++;
-												printTabuleiro(bhagaChall.obtemGrade(id));
-												continue;
-											case 0:
-												System.out.println("Movimento Invalido! Tente novamente.");
-												continue;
-											case -6:
-												System.out.println("Direção Invalida! Tente novamente.");
-												continue;
-											case -1:
-												System.out.println("<<ERRO | moveCabra>> Tente novamente, ou contate o administrador do sistema.");
-												continue;
-										}
-									} catch(NumberFormatException nfe){
+									if(!coordenada.contains("-")){
 										System.out.println("Você digitou alguma coisa errada, porfavor tente novamente.");
 										continue;
-									} 
-									break;
-								}
-								System.out.println("Posicione uma cabra, informando x e y, nesse formato: X-Y");
-								String coordenada = leitor.nextLine();
-								String[] xy = coordenada.split("-");
-								
-								//testar o que acontece se não colocar um número provavelmente uma exeção dai tratar ela
-								try{
-									switch(bhagaChall.posicionaCabra(id, Integer.parseInt(xy[0]), Integer.parseInt(xy[1]))){
+									}
+									String[] xy = coordenada.split("-");							
+									
+									switch(bhagaChall.moveCabra(id, (int)xy[0].charAt(0), Integer.parseInt(xy[1]))){
 										case 1:
-											turno ++;
-											cabras--;
+											turno++;
 											printTabuleiro(bhagaChall.obtemGrade(id));
 											continue;
 										case 0:
-											System.out.println("Posição Invalida! Tente novamente.");
+											System.out.println("Movimento Invalido! Tente novamente.");
+											continue;
+										case -6:
+											System.out.println("Direção Invalida! Tente novamente.");
 											continue;
 										case -1:
-											System.out.println("<<ERRO | posicionaCabra>> Tente novamente, ou contate o administrador do sistema.");
+											System.out.println("<<ERRO | moveCabra>> Tente novamente, ou contate o administrador do sistema.");
 											continue;
 									}
-								} catch(NumberFormatException nfe){
+								} 							
+								System.out.println("Posicione uma cabra, informando x e y, nesse formato: X-Y");
+								String coordenada = leitor.nextLine();
+								if(!coordenada.contains("-")){
 									System.out.println("Você digitou alguma coisa errada, porfavor tente novamente.");
 									continue;
+								}
+								String[] xy = coordenada.split("-");
+							
+								switch(bhagaChall.posicionaCabra(id, Integer.parseInt(xy[0]), Integer.parseInt(xy[1]))){
+									case 1:
+										turno ++;
+										cabras--;
+										printTabuleiro(bhagaChall.obtemGrade(id));
+										continue;
+									case 0:
+										System.out.println("Posição Invalida! Tente novamente.");
+										continue;
+									case -1:
+										System.out.println("<<ERRO | posicionaCabra>> Tente novamente, ou contate o administrador do sistema.");
+										continue;
+								}
+							} catch(Exception nfe){
+								System.out.println("Você digitou alguma coisa errada, porfavor tente novamente.");
+								continue;
 								} 
 							}
 							//se sou tigre
 							else if(jogador == 1){
-								System.out.println("Turno: " + turno++ + " " + args[1] + " vS " + bhagaChall.obtemOponente(id));
-								printTabuleiro(bhagaChall.obtemGrade(id));
-								
-								System.out.println("Movimente um tigre, informando o tigre e a direção, nesse formato: Tigre-Direção");
-								String coordenada = leitor.nextLine();
-								String[] xy = coordenada.split("-");
-								
 								try{
+									System.out.println("Turno: " + turno + " " + args[1] + " vS " + bhagaChall.obtemOponente(id));
+									printTabuleiro(bhagaChall.obtemGrade(id));
+								
+									System.out.println("Movimente um tigre, informando o tigre e a direção, nesse formato: Tigre-Direção");
+									String coordenada = leitor.nextLine();
+									if(!coordenada.contains("-")){
+										System.out.println("Você digitou alguma coisa errada, porfavor tente novamente.");
+										continue;
+									}
+									String[] xy = coordenada.split("-");
+																		
 									switch(bhagaChall.moveTigre(id, Integer.parseInt(xy[0]), Integer.parseInt(xy[1]))){
 										case 1:
 											turno++;
@@ -161,10 +170,10 @@ public class BhagaChallClient {
 											System.out.println("Direção Invalida! Tente novamente.");
 											continue;
 										case -1:
-											System.out.println("<<ERRO | moveCabra>> Tente novamente, ou contate o administrador do sistema.");
+											System.out.println("<<ERRO | moveTigre>> Tente novamente, ou contate o administrador do sistema.");
 											continue;
 									}
-								} catch(NumberFormatException nfe){
+								}catch(Exception nfe){
 									System.out.println("Você digitou alguma coisa errada, porfavor tente novamente.");
 									continue;
 								} 
@@ -189,11 +198,13 @@ public class BhagaChallClient {
 							System.out.println("Você perdeu por WO! Tente outra vez.");
 							return;
 					}
-				}			
+				}	
 		}catch (Exception e) {
 			System.out.println ("BhagaChallClient failed.");
 			e.printStackTrace();
 		}
+		
+		
 	}
 	
 	private static void printTabuleiro(String tab){

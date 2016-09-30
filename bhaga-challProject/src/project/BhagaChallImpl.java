@@ -8,12 +8,12 @@ public class BhagaChallImpl extends UnicastRemoteObject implements BhagaChallInt
 		private static final long serialVersionUID = -513804057617910473L;
 		
 		
+		
 		public class Partida{
 			
 			private int[] IDs;
 			private BhagaChall jogo;		
 			private int idArray;
-			private int IDquitou;
 			
 			public Partida(int id) throws RemoteException{
 				idArray = id;
@@ -21,7 +21,6 @@ public class BhagaChallImpl extends UnicastRemoteObject implements BhagaChallInt
 				IDs[0] = -1;
 				IDs[1] = -1;
 				jogo = new BhagaChall();
-				IDquitou = -1;
 			}
 			
 			public int setID(String nome) throws RemoteException{
@@ -35,14 +34,6 @@ public class BhagaChallImpl extends UnicastRemoteObject implements BhagaChallInt
 					return IDs[1];
 				}
 				return -1;
-			}
-			
-			public int getIDquitou(){
-				return IDquitou;
-			}
-			
-			public void setIDquitou(int id){
-				IDquitou = id;
 			}
 			
 			public int getIDArray(){
@@ -63,9 +54,7 @@ public class BhagaChallImpl extends UnicastRemoteObject implements BhagaChallInt
 				return true;
 			}
 		}
-		
-		//o identificador deve ser unico, guardar em uma tabela a partida e os identificadores
-		
+				
 		private Partida[] partidas;
 		
 		public BhagaChallImpl(int nroPartidas) throws RemoteException{
@@ -111,8 +100,16 @@ public class BhagaChallImpl extends UnicastRemoteObject implements BhagaChallInt
 				return -1;
 			}
 			partida.jogo.encerraPartida(id);
+			if(partida.IDs[0] == id){
+				partida.IDs[0] = -2;
+			}else if(partida.IDs[1] == id){
+				partida.IDs[1] = -2;
+			}
+			if(partida.IDs[0] == -2 && partida.IDs[1] == -2) {
+				partidas[partida.getIDArray()] = new Partida(partida.getIDArray());
+			}
 			//zerar aqui o jogo e anunciar para o outro jogador que ele foi vitorioso
-			partida.setIDquitou(id);
+			System.out.println("Id: " + id + " desconectou.");
 			return 0;
 		}
 
@@ -125,9 +122,7 @@ public class BhagaChallImpl extends UnicastRemoteObject implements BhagaChallInt
 		@Override
 		public int ehMinhaVez(int id) throws RemoteException {
 			Partida partida = findPartidaID(id);
-			if(partida.getIDquitou() != -1){
-				return 5;
-			}
+			
 			return partida.jogo.ehMinhaVez(id);
 		}
 
