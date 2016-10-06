@@ -679,7 +679,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 	 	* máximo de jogadores tiver sido atingido 
 	 	*/
 		@Override
-		public int registraJogador(String nome) throws RemoteException {			
+		public synchronized int registraJogador(String nome) throws RemoteException {			
 			//retorna id do jogador
 			if(jogadores[0] == null){
 				jogadores[0] = new Jogador(ID++,nome,0);
@@ -739,7 +739,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		 * dígitos de “1” até “4”)
 		 */
 		@Override
-		public int temPartida(int id) throws RemoteException {
+		public synchronized int temPartida(int id) throws RemoteException {
 			
 			Jogador player = getJogador(id);
 			if(player == null){return -1;}	
@@ -788,7 +788,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 	     * (é o vencedor), 3 (é o perdedor), 4 (houve empate), 5 (vencedor por WO), 6 (perdedor por WO)
 		 */
 		@Override
-		public int ehMinhaVez(int id) throws RemoteException {
+		public synchronized int ehMinhaVez(int id) throws RemoteException {
 			
 			//se não tem um jogador retorna -2
 			if(jogadores[0] == null || jogadores[1] == null){
@@ -933,7 +933,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		 * ­-3 (não é a vez do jogador), ­-4 (não está jogando com o animal correto) ou -­5 (direção inválida).
 		 */
 		@Override
-		public int moveTigre(int id, int tigre, int direcao) throws RemoteException {
+		public synchronized int moveTigre(int id, int tigre, int direcao) throws RemoteException {
 			// se ainda não tem partida
 			if(temPartida(id) == 0){
 				return -2;
@@ -1046,7 +1046,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		 * ­foram posicionadas).
 		 */
 		@Override
-		public int posicionaCabra(int id, int x, int y) throws RemoteException {			
+		public synchronized int posicionaCabra(int id, int x, int y) throws RemoteException {			
 			Jogador player = getJogador(id);
 			if(player == null){return -1;}	
 			//se o jogador não é cabra manda embora e retorna -4
@@ -1125,7 +1125,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 		 * ­fase de movimentação de cabras) ou ­-6 (direção inválida).
 		 */	
 		@Override
-		public int moveCabra(int id, int cabra, int direcao) throws RemoteException {
+		public synchronized int moveCabra(int id, int cabra, int direcao) throws RemoteException {
 			// se ainda não tem partida
 			if(temPartida(id) == 0){
 				return -2;
