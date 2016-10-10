@@ -63,6 +63,7 @@ public class BhagaChallClient {
 					System.out.println("As direções varias de 0 a 7");
 					System.out.println("O tabuleiro é composto de 0 até 4 em x, e 0 até 4 em y");
 					System.out.println("Para mais informações, porfavor, ver o enunciado do trabalho");
+					System.out.println("Você é o primeiro a jogar.");
 				}else if(jogador == 1){
 					System.out.println("Você está jogando com os tigres.");
 					System.out.println("Os tigres são identificados de 1 a 4");
@@ -70,6 +71,7 @@ public class BhagaChallClient {
 					System.out.println("As direções varias de 0 a 7");
 					System.out.println("O tabuleiro é composto de 0 até 4 em x, e 0 até 4 em y");
 					System.out.println("Para mais informações, porfavor, ver o enunciado do trabalho");
+					System.out.println("Aguarde você é o segundo a jogar.");
 				}else{
 					bhagaChall.encerraPartida(id);
 					System.out.println("<<ERRO | jogador>> Reinicie o jogo.");
@@ -106,6 +108,7 @@ public class BhagaChallClient {
 										case 1:
 											turno++;
 											printTabuleiro(bhagaChall.obtemGrade(id));
+											System.out.println("Aguarde...");
 											continue;
 										case 0:
 											System.out.println("Movimento Invalido! Tente novamente.");
@@ -131,6 +134,7 @@ public class BhagaChallClient {
 										turno ++;
 										cabras--;
 										printTabuleiro(bhagaChall.obtemGrade(id));
+										System.out.println("Aguarde...");
 										continue;
 									case 0:
 										System.out.println("Posição Invalida! Tente novamente.");
@@ -162,6 +166,7 @@ public class BhagaChallClient {
 										case 1:
 											turno++;
 											printTabuleiro(bhagaChall.obtemGrade(id));
+											System.out.println("Aguarde...");
 											continue;
 										case 0:
 											System.out.println("Movimento Invalido! Tente novamente.");
