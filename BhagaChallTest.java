@@ -1,12 +1,6 @@
-package project;
-
 import static org.junit.Assert.*;
-
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-//import static org.junit.Assert.*;
-//import java.util.Scanner;
-
 import org.junit.Test;
 
 public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterface {

@@ -1,13 +1,5 @@
-package project;
-
-import static org.junit.Assert.*;
-
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-//import static org.junit.Assert.*;
-//import java.util.Scanner;
-
-import org.junit.Test;
 
 public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterface {
 	
@@ -692,16 +684,6 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 				return -2;
 			}
 		}
-		@Test
-		public void testRegistraJogador() throws RemoteException {
-			BhagaChall bhaga = new BhagaChall();		
-			assertSame(BhagaChall.ID, bhaga.registraJogador("Matheus"));
-			assertSame(-1, bhaga.registraJogador("Matheus"));	
-			assertSame(BhagaChall.ID, bhaga.registraJogador("Carol"));
-			assertSame(-2, bhaga.registraJogador("Maria"));			
-			assertSame(-2, bhaga.registraJogador("Pedro"));
-			assertSame(-2, bhaga.registraJogador("Valnei"));
-		}
 		
 		//para implementar o temporizador utilizar thread que verifica de um em um segundo e quando atingir trinta encerra
 		/* 2) encerraPartida
@@ -717,16 +699,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			}
 			return -1;
 		}
-		@Test
-		public void testEncerraPartida() throws RemoteException {
-			BhagaChall bhaga = new BhagaChall();		
-			int idM = bhaga.registraJogador("Matheus");
-			bhaga.registraJogador("Carol");
-			
-			assertSame(0, bhaga.encerraPartida(idM));
-			assertSame(null, bhaga.jogadores[0]);
-		}
-				
+
 		/* 3) temPartida
 		 * Recebe: id do usuário (obtido através da chamada registraJogador)
 		 * Retorna: ­-2 (tempo de espera esgotado), -­1 (erro), 0 (ainda não há partida), 1 (sim, há partida e o
@@ -760,22 +733,6 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			
 			//se erro retorna -1
 			return -1;		
-		}
-		@Test
-		public void testTemPartida() throws RemoteException {
-			BhagaChall bhaga = new BhagaChall();		
-			assertSame(0, bhaga.temPartida(0));			
-			assertSame(0, bhaga.temPartida(1));
-			int idM = bhaga.registraJogador("Matheus");
-			assertSame(0, bhaga.temPartida(idM));
-			int idC = bhaga.registraJogador("Carol");
-			assertSame(1, bhaga.temPartida(idM));			
-			assertSame(2, bhaga.temPartida(idC));
-
-			assertSame(-1, bhaga.temPartida(-10));
-			assertSame(-1, bhaga.temPartida(-1));	
-			assertSame(-1, bhaga.temPartida(2));			
-			assertSame(-1, bhaga.temPartida(10));
 		}
 		
 		/*4) ehMinhaVez
@@ -811,61 +768,6 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			return -1;
 
 		}
-		@Test
-		public void testEhMinhaVez() throws RemoteException {
-			BhagaChall bhaga = new BhagaChall();		
-			int idM = bhaga.registraJogador("Matheus");
-			assertSame(-2, bhaga.ehMinhaVez(idM));
-			int idC = bhaga.registraJogador("Carol");
-			assertSame(1, bhaga.ehMinhaVez(idM));
-			bhaga.turno = 1;
-			assertSame(1, bhaga.ehMinhaVez(idC));
-			//cenario de ganhar o jogo para cabras
-			bhaga.turno = 0;
-			bhaga.posicionaCabra(idM, 0, 1);
-			bhaga.turno = 0;
-			bhaga.posicionaCabra(idM, 0, 2);
-			bhaga.turno = 0;
-			bhaga.posicionaCabra(idM, 1, 1);
-			bhaga.turno = 0;
-			bhaga.posicionaCabra(idM, 2, 2);
-			bhaga.turno = 0;
-			bhaga.posicionaCabra(idM, 1, 0);
-			bhaga.turno = 0;
-			bhaga.posicionaCabra(idM, 2, 0);
-			bhaga.turno = 0;
-			bhaga.posicionaCabra(idM, 0, 3);
-			bhaga.turno = 0;
-			bhaga.posicionaCabra(idM, 1, 3);
-			bhaga.turno = 0;
-			bhaga.posicionaCabra(idM, 1, 4);
-			bhaga.turno = 0;
-			bhaga.posicionaCabra(idM, 2, 4);
-			bhaga.turno = 0;
-			bhaga.posicionaCabra(idM, 3, 0);
-			bhaga.turno = 0;
-			bhaga.posicionaCabra(idM, 3, 1);
-			bhaga.turno = 0;
-			bhaga.posicionaCabra(idM, 4, 1);
-			bhaga.turno = 0;
-			bhaga.posicionaCabra(idM, 4, 2);
-			bhaga.turno = 0;
-			bhaga.posicionaCabra(idM, 4, 3);
-			bhaga.turno = 0;
-			bhaga.posicionaCabra(idM, 3, 3);
-			bhaga.turno = 0;
-			bhaga.posicionaCabra(idM, 3, 4);
-			assertSame(2, bhaga.ehMinhaVez(idM));
-			assertSame(3, bhaga.ehMinhaVez(idC));
-			//cenario de ganhar o jogo para tigres
-			bhaga.tabuleiro.setPosicao(0, 1, '.');
-			bhaga.cabrasCapturadas = 5;
-			assertSame(3, bhaga.ehMinhaVez(idM));
-			assertSame(2, bhaga.ehMinhaVez(idC));
-			//erro
-			assertSame(-1, bhaga.ehMinhaVez(-2));
-			assertSame(-1, bhaga.ehMinhaVez(-10));
-		}
 		
 		/*5) obtemGrade
 		 * Recebe: id do usuário (obtido através da chamada registraJogador)
@@ -888,19 +790,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 				return "";
 			}
 			return tabuleiro.toString();
-		}
-		@Test
-		public void testObtemGrade() throws RemoteException {
-			BhagaChall bhaga = new BhagaChall();
-			
-			int idM = bhaga.registraJogador("Matheus");
-			int idC = bhaga.registraJogador("Carol");
-			assertEquals("1...2...............3...4", bhaga.obtemGrade(idM));
-			assertEquals("1...2...............3...4", bhaga.obtemGrade(idC));
-			//fazer aqui algumas jogadas e ver o resultado esperado
-			assertEquals("", bhaga.obtemGrade(-1));
-			assertEquals("", bhaga.obtemGrade(-10));
-		}		
+		}	
 		
 		/*6) moveTigre
 		 * Recebe: id do usuário (obtido através da chamada registraJogador) e direção relativa da jogada
@@ -974,46 +864,6 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			}
 			return -1;
 		}
-		@Test
-		public void testMoveTigre() throws RemoteException {
-			BhagaChall bhaga = new BhagaChall();	
-
-			assertSame(-2, bhaga.moveTigre(0, 1, 0));
-
-			int idM = bhaga.registraJogador("Matheus");
-
-			assertSame(-2, bhaga.moveTigre(idM, 1, 0));
-
-			int idC = bhaga.registraJogador("Carol");
-			
-			assertSame(-3, bhaga.moveTigre(idC, 1, 0));
-			assertSame(-3, bhaga.moveTigre(idC, 2, 4));
-			assertSame(-3, bhaga.moveTigre(idC, 3, 0));
-			assertSame(-3, bhaga.moveTigre(idC, 4, 4));
-
-			assertSame(-4, bhaga.moveTigre(idM, 1, 0));
-			assertSame(-4, bhaga.moveTigre(idM, 1, 2));
-
-			bhaga.posicionaCabra(idM, 0, 2);
-			assertSame(-1, bhaga.moveTigre(idC, 5, 0));
-			assertSame(-1, bhaga.moveTigre(idC, -1, 0));
-			assertSame(-1, bhaga.moveTigre(idC, 10, 0));
-			assertSame(-1, bhaga.moveTigre(idC, -10, 0));
-
-			assertSame(1, bhaga.moveTigre(idC, 4, 6));
-			bhaga.posicionaCabra(idM, 0, 1);
-
-			bhaga.posicionaCabra(idM, 0, 2);		
-			assertSame(0, bhaga.moveTigre(idC, 1, 0));			
-			assertSame(-5, bhaga.moveTigre(idC, 1, 6));
-			assertSame(-5, bhaga.moveTigre(idC, 2, 0));
-			assertSame(-5, bhaga.moveTigre(idC, 3, 4));
-			assertSame(-5, bhaga.moveTigre(idC, 4, 0));
-			assertSame(1, bhaga.moveTigre(idC, 1, 2));
-			bhaga.posicionaCabra(idM, 4, 1);
-			assertSame(1, bhaga.moveTigre(idC, 3, 0));
-			
-		}		
 		
 		/*7) posicionaCabra
 		 * ­Recebe: id do usuário (obtido através da chamada registraJogador) e posição do tabuleiro onde a
@@ -1052,45 +902,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			return 1;
 			
 		}
-		@Test
-		public void testPosicionaCabra() throws RemoteException {
-			BhagaChall bhaga = new BhagaChall();	
-					
-			int idM = bhaga.registraJogador("Matheus");
-			assertSame(-2, bhaga.posicionaCabra(idM, 0, 0));
-			int idC = bhaga.registraJogador("Carol");
 
-			assertSame(-1, bhaga.posicionaCabra(-10, 0, 0));
-			assertSame(-1, bhaga.posicionaCabra(-1, 0, 0));
-
-			assertSame(-4, bhaga.posicionaCabra(idC, 0, 0));
-			
-			//jogada do trigre
-			bhaga.turno = 1;
-			assertSame(-3, bhaga.posicionaCabra(idM, 0, 0));
-			bhaga.turno = 0;
-			
-			//adicionar todas as cabras
-			bhaga.proximaCabra = 85;
-			assertSame(-5, bhaga.posicionaCabra(idM, 0, 0));
-			bhaga.proximaCabra = 65;
-			
-			assertSame(0, bhaga.posicionaCabra(idM, 5, 0));
-			assertSame(0, bhaga.posicionaCabra(idM, -1, 0));
-			assertSame(0, bhaga.posicionaCabra(idM, 0, 5));
-			assertSame(0, bhaga.posicionaCabra(idM, 0, -1));
-			assertSame(0, bhaga.posicionaCabra(idM, 4, 0));
-			assertSame(0, bhaga.posicionaCabra(idM, 4, 4));
-			
-			assertSame(1, bhaga.posicionaCabra(idM, 2, 2));
-			assertEquals("1...2.......A.......3...4", bhaga.obtemGrade(idM));
-			assertSame(1, bhaga.turno);
-			bhaga.turno = 0;
-			assertSame(1, bhaga.posicionaCabra(idM, 3, 3));
-			assertEquals("1...2.......A.....B.3...4", bhaga.obtemGrade(idM));
-			assertSame(1, bhaga.turno);
-		}		
-		
 		/*8) moveCabra
 		 * ­Recebe: id do usuário (obtido através da chamada registraJogador), identificador da cabra a ser
 		 * ­movimentada (valor de 0 até 19, inclusive, considerando que cada cabra estará em determinada
@@ -1137,49 +949,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			}
 			return -1;
 		}
-		@Test
-		public void testMoveCabra() throws RemoteException {
-			BhagaChall bhaga = new BhagaChall();	
-			
-			assertSame(-2, bhaga.moveCabra(0, 64, 1));
-			
-			int idM = bhaga.registraJogador("Matheus");
-			
-			assertSame(-2, bhaga.moveCabra(idM, 64, 1));
-			
-			int idC = bhaga.registraJogador("Carol");
-			
-			assertSame(-4, bhaga.moveCabra(idC, 64, 1));
-			assertSame(-4, bhaga.moveCabra(idC, 64, 2));			
-			assertSame(-5, bhaga.moveCabra(idM, 64, 0));
-			assertSame(-5, bhaga.moveCabra(idM, 64, 1));
 
-			bhaga.posicionaCabra(idM, 2, 2);
-			bhaga.moveTigre(idC, 1, 0);
-			bhaga.posicionaCabra(idM, 3, 2);
-			bhaga.moveTigre(idC, 2, 2);
-
-			assertSame(-5, bhaga.moveCabra(idM, 64, 0));
-			assertSame(-5, bhaga.moveCabra(idM, 64, 1));
-			
-			//forcando a ter o numero maximo de cabras
-			bhaga.proximaCabra = 85;
-			
-			assertSame(-1, bhaga.moveCabra(idM, 0, 0));
-			assertSame(-1, bhaga.moveCabra(idM, 64, 0));
-			
-			assertSame(1, bhaga.moveCabra(idM, 65, 0));
-			assertSame(-3, bhaga.moveCabra(idM, 65, 0));
-			bhaga.turno = 0;
-			assertSame(1, bhaga.moveCabra(idM, 65, 2));
-			bhaga.turno = 0;
-			assertSame(-6, bhaga.moveCabra(idM, 65, 4));
-			assertSame(-6, bhaga.moveCabra(idM, 66, 0));
-			assertSame(1, bhaga.moveCabra(idM, 66, 4));
-			bhaga.turno = 0;
-			assertSame(-1, bhaga.moveCabra(idM, 68, 0));
-		}		
-		
 		/*9) obtemOponente
 	 	 * Recebe: id do usuário (obtido através da chamada registraJogador)
 		 * Retorna: string vazio para erro ou string com o nome do oponente
@@ -1200,19 +970,6 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 				return jogadores[0].getNome();
 			}
 			return "";
-		}
-		@Test
-		public void testObtemOponente() throws RemoteException {
-			BhagaChall bhaga = new BhagaChall();		
-
-			int idM = bhaga.registraJogador("Matheus");
-			int idC = bhaga.registraJogador("Carol");
-			assertEquals("Carol", bhaga.obtemOponente(idM));
-			assertEquals("Matheus", bhaga.obtemOponente(idC));
-
-			assertEquals("", bhaga.obtemOponente(-1));
-			assertEquals("", bhaga.obtemOponente(-10));
-			assertEquals("", bhaga.obtemOponente(-100));
 		}
 }
 
