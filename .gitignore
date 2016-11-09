@@ -1,1 +1,8 @@
 *.class
+/NetFeijao/BhagaChallWeb/nbproject/private/
+/netFeijao/BhagaChallWeb/build/
+/netFeijao/BhagaChallWeb/dist/
+/WebService/nbproject/private/
+/netFeijao/BhagaChallWSclient/nbproject/private/
+/netFeijao/WebService/build/
+/netFeijao/BhagaChallWSclient/build/
