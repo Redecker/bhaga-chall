@@ -663,16 +663,18 @@ public class BhagaChall{
 	 	* este usuário durante uma partida), -­1 se este usuário já está  cadastrado ou ­-2 se o número
 	 	* máximo de jogadores tiver sido atingido 
 	 	*/
-		public int registraJogador(String nome){			
+		public int registraJogador(String nome, int id){			
 			//retorna id do jogador
 			if(jogadores[0] == null){
-				jogadores[0] = new Jogador(ID++,nome,0);
+				//jogadores[0] = new Jogador(ID++,nome,0);
+                                jogadores[0] = new Jogador(id,nome,0);
 				//jogadores[0].tempoInicio = System.currentTimeMillis();
 				return jogadores[0].getID();					
 			}else if(jogadores[1] == null){
 				//se o usuario já esta cadastrado retorna -1		
 				if(jogadores[0].getNome().equals(nome)) return -1; 
-				jogadores[1] = new Jogador(ID++,nome,1);
+				//jogadores[1] = new Jogador(ID++,nome,1);
+                                jogadores[1] = new Jogador(id,nome,1);
 				return jogadores[1].getID();
 			}
 			//se não tem mais espaço pra jogar

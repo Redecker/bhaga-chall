@@ -23,7 +23,7 @@ public class BhagaChallWSclient {
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
-        executaTeste("BhagaChall-000");
+        executaTeste("BhagaChall-002");
     }
 
     private static void executaTeste(String rad) throws IOException {

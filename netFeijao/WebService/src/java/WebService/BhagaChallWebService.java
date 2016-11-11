@@ -5,6 +5,7 @@
  */
 package WebService;
 
+import java.util.ArrayList;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -32,14 +33,14 @@ public class BhagaChallWebService {
 				jogo = new BhagaChall();
 			}
 			
-			public int setID(String nome){
+			public int setID(String nome,int id){
 				if(IDs[0] == -1){
-					IDs[0] = jogo.registraJogador(nome);
-					if(IDs[0] != -1) System.out.println("Jogador: " + nome + " Jogando na partida: " + this.idArray + " Com ID: " + IDs[0]);
+					IDs[0] = jogo.registraJogador(nome,id);
+					if(IDs[0] != -1) System.out.println("<tag>Jogador: " + nome + " Jogando na partida: " + this.idArray + " Com ID: " + IDs[0]);
 					return IDs[0];
 				}else if(IDs[1] == -1){
-					IDs[1] = jogo.registraJogador(nome);
-					if(IDs[1] != -1) System.out.println("Jogador: " + nome + " Jogando na partida: " + this.idArray + " Com ID: " + IDs[1]);
+					IDs[1] = jogo.registraJogador(nome,id);
+					if(IDs[1] != -1) System.out.println("<tag>Jogador: " + nome + " Jogando na partida: " + this.idArray + " Com ID: " + IDs[1]);
 					return IDs[1];
 				}
 				return -1;
@@ -63,11 +64,43 @@ public class BhagaChallWebService {
 				return true;
 			}
 		}
-				
+
+    public class PreRegistro{
+      private String jogador1;
+      private String jogador2;
+      private int id1;
+      private int id2;
+      
+      public PreRegistro(String j1, int id1, String j2, int id2){
+          jogador1 = j1;
+          jogador2 = j2;
+          this.id1 = id1;
+          this.id2 = id2;
+      }
+        public String getJogador1() {
+            return jogador1;
+        }
+
+        public String getJogador2() {
+            return jogador2;
+        }
+
+        public int getId1() {
+            return id1;
+        }
+
+        public int getId2() {
+            return id2;
+        }
+    }
+    
     private Partida[] partidas;
-		
+    private ArrayList<PreRegistro> preRegistro; 
+    private static int arrayid;
     public BhagaChallWebService(){
 	partidas = new Partida[50];
+        preRegistro = new ArrayList<>();
+        arrayid = 0;
 	for(int i = 0; i < 50 ; i++){
 		partidas[i] = new Partida(i);
 	}
@@ -83,21 +116,48 @@ public class BhagaChallWebService {
     }
 	
     
+    
     @WebMethod(operationName = "preRegistro")
-    public String preRegistro(@WebParam(name = "jogador1") String jogador1, @WebParam(name = "identificador1") int identificador1, @WebParam(name = "jogador2") String jogador2, @WebParam(name = "identificador2") int identificador2) {
-        //TODO write your implementation code here:
-        return null;
+    public int preRegistro(@WebParam(name = "jogador1") String jogador1, @WebParam(name = "identificador1") int identificador1, @WebParam(name = "jogador2") String jogador2, @WebParam(name = "identificador2") int identificador2) {
+        preRegistro.add(new PreRegistro(jogador1, identificador1, jogador2, identificador2));
+        return 0;
     }
     
     //AQUI VAI SABER QUAL É O JOGADOR PORQUE PRECISA DE UMA HASH DO PREREGISTRO!!!!!!!!!
     @WebMethod(operationName = "registraJogador")
     public int registraJogador(@WebParam(name = "nome") String nome) {  
+        int id = 0;
+        for(int i = 0; i < preRegistro.size(); i++){
+            PreRegistro p = preRegistro.get(i);
+            if(p.getJogador1().equals(nome)){
+                id = p.getId1();
+                break;
+            }
+            if(p.getJogador2().equals(nome)){
+                id = p.getId2();
+                break;
+            }
+        }
+        //verifica se alguma partida contém o ID
         Partida partida = null;
-	//se não tem lugar disponivel diz sinto muito
-	if(partida == null){
-            return -2;
-	}	
-	return partida.setID(nome); 
+        for(int i = 0; i < partidas.length; i++){
+		if(partidas[i].contaisID(id)){
+                    partida = partidas[i];
+		}
+	}
+        //se nenhuma tem o ID, então cria uma partida
+        if(partida == null){
+            for(int i = 0; i < partidas.length; i++){
+		if(!partidas[i].temPartida()){
+			partidas[i] = new Partida(arrayid++);
+                        return partidas[i].setID(nome,id); 
+		}
+            }
+        }else{
+            return partida.setID(nome, id);
+        }        
+        
+        return -10;
     }
     
     //VER ISSO AQUI TAH UMA GAMBIARRA FORTE!!!!!
@@ -123,43 +183,50 @@ public class BhagaChallWebService {
 
     @WebMethod(operationName = "temPartida")
     public int temPartida(@WebParam(name = "identificador") int identificador) {
-        Partida partida = findPartidaID(identificador);      
+        Partida partida = findPartidaID(identificador); 
+        if(partida == null) return -10;
         return partida.jogo.temPartida(identificador);
     }
 
     @WebMethod(operationName = "ehMinhaVez")
     public int ehMinhaVez(@WebParam(name = "identificador") int identificador) {
-        Partida partida = findPartidaID(identificador);   
+        Partida partida = findPartidaID(identificador);
+        if(partida == null) return -10;
         return partida.jogo.ehMinhaVez(identificador);
     }
 
     @WebMethod(operationName = "obtemGrade")
     public String obtemGrade(@WebParam(name = "identificador") int identificador) {
         Partida partida = findPartidaID(identificador);   
+        if(partida == null) return "-10";
         return partida.jogo.obtemGrade(identificador);
     }
 
     @WebMethod(operationName = "moveTigre")
     public int moveTigre(@WebParam(name = "identificador") int identificador, @WebParam(name = "tigre") int tigre, @WebParam(name = "direcao") int direcao) {
         Partida partida = findPartidaID(identificador);   
+        if(partida == null) return -10;
         return partida.jogo.moveTigre(identificador, tigre, direcao);
     }
 
     @WebMethod(operationName = "posicionaCabra")
     public int posicionaCabra(@WebParam(name = "identificador") int identificador, @WebParam(name = "x") int x, @WebParam(name = "y") int y) {
-        Partida partida = findPartidaID(identificador);   
+        Partida partida = findPartidaID(identificador);  
+        if(partida == null) return -10;
         return partida.jogo.posicionaCabra(identificador, x, y);
     }
 
     @WebMethod(operationName = "moveCabra")
     public int moveCabra(@WebParam(name = "identificador") int identificador, @WebParam(name = "cabra") int cabra, @WebParam(name = "direcao") int direcao) {
-        Partida partida = findPartidaID(identificador);   
+        Partida partida = findPartidaID(identificador); 
+        if(partida == null) return -10;
         return partida.jogo.moveCabra(identificador, cabra, direcao);
     }
 
     @WebMethod(operationName = "obtemOponente")
     public String obtemOponente(@WebParam(name = "identificador") int identificador) {
         Partida partida = findPartidaID(identificador);   
+        if(partida == null) return "-10";
         return partida.jogo.obtemOponente(identificador);
     }
 }
