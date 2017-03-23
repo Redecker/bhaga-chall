@@ -137,15 +137,15 @@ public class BhagaChallWebService {
             }
         }
                
-        for(int i = 0; i < partidas.length; i++){
-		if(partidas[i].contaisID(idoutro)){
-                    return partidas[i].setID(nome, idmeu);
-		}
-	}
+        for (Partida partida : partidas) {
+            if (partida.contaisID(idoutro)) {
+                return partida.setID(nome, idmeu);
+            }
+        }
         
-        for(int i = 0; i < partidas.length; i++){
-            if(partidas[i].ninguemCadastrado()){
-		return partidas[i].setID(nome, idmeu); 
+        for (Partida partida : partidas) {
+            if (partida.ninguemCadastrado()) {
+                return partida.setID(nome, idmeu); 
             }
         }
         return -10;

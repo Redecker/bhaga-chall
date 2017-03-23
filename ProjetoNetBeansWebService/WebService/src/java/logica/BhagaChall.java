@@ -37,6 +37,7 @@ public class BhagaChall{
 				}
 			}
 			
+                        @Override
 			public String toString(){
 				String toReturn = "";
 				for(int i = 0; i < x.length ; i++){
@@ -105,6 +106,7 @@ public class BhagaChall{
 				return null;
 			}		
 			
+                        @Override
 			public String toString(){
 				String toReturn = "";
 				for(int i = 0; i < board[0].length ; i++){
@@ -660,18 +662,10 @@ public class BhagaChall{
 		}
 
 		private boolean temCabra(int x, int y){
-			if(tabuleiro.getPosicao(x, y) >= 65 && tabuleiro.getPosicao(x, y) <= 84 ){
-				return true;
-			}else{
-				return false;
-			}
+			return (tabuleiro.getPosicao(x, y) >= 65 && tabuleiro.getPosicao(x, y) <= 84 );
 		}
 		private boolean temTigre(int x, int y) {
-			if(tabuleiro.getPosicao(x, y) >= 49 && tabuleiro.getPosicao(x, y) <= 52 ){
-				return true;
-			}else{
-				return false;
-			}
+			return (tabuleiro.getPosicao(x, y) >= 49 && tabuleiro.getPosicao(x, y) <= 52 );
 		}
 		
 		private Jogador getJogador(int id){
