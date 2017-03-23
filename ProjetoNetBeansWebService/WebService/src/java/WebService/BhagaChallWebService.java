@@ -27,27 +27,26 @@ public class BhagaChallWebService {
 			public Partida(){
 				IDs = new ArrayList<>();
 				jogo = new BhagaChall();
-                                encerra = new ArrayList<>();
+                encerra = new ArrayList<>();
 			}
                         
-                        public int encerraPartida(int id){
-                            int retorno = jogo.encerraPartida(id);
-                            encerra.add(Boolean.TRUE);
-                            
-                            if(encerra.size() == 2){
-				IDs = new ArrayList<>();
-				jogo = new BhagaChall();
-                                encerra = new ArrayList<>();
-                            }
-                            
-                            return retorno;                            
-                        }
+            public int encerraPartida(int id){
+                int retorno = jogo.encerraPartida(id);
+                encerra.add(Boolean.TRUE);
+                           
+                if(encerra.size() == 2){
+	           		IDs = new ArrayList<>();
+				    jogo = new BhagaChall();
+                    encerra = new ArrayList<>();
+                }
+                return retorno;                            
+            }
                         
 			public int setID(String nome,int id){
 				if(IDs.size() < 2){
-                                    int retornoID = jogo.registraJogador(nome, id);
-                                    IDs.add(retornoID);
-                                    return retornoID;
+                    int retornoID = jogo.registraJogador(nome, id);
+                    IDs.add(retornoID);
+                    return retornoID;
 				}
 				return -10;
 			}
@@ -56,9 +55,9 @@ public class BhagaChallWebService {
 				return IDs.contains(id);
 			}
 			
-                        public boolean ninguemCadastrado(){
-                            return IDs.isEmpty();
-                        }
+            public boolean ninguemCadastrado(){
+                return IDs.isEmpty();
+            }
                         
 			public boolean temPartida(){
 				return IDs.size() == 2;
@@ -121,7 +120,6 @@ public class BhagaChallWebService {
         return 0;
     }
     
-    //AQUI VAI SABER QUAL É O JOGADOR PORQUE PRECISA DE UMA HASH DO PREREGISTRO!!!!!!!!!
     @WebMethod(operationName = "registraJogador")
     public int registraJogador(@WebParam(name = "nome") String nome) {  
         int idmeu = -1;
@@ -146,22 +144,21 @@ public class BhagaChallWebService {
 	}
         
         for(int i = 0; i < partidas.length; i++){
-            if(partidas[i].ninguemCadastrado()){//if(!partidas[i].temPartida()){
+            if(partidas[i].ninguemCadastrado()){
 		return partidas[i].setID(nome, idmeu); 
             }
         }
         return -10;
     }
     
-    //VER ISSO AQUI TAH UMA GAMBIARRA FORTE!!!!!
     @WebMethod(operationName = "encerraPartida")
     public int encerraPartida(@WebParam(name = "identificador") int identificador) {
         Partida partida = findPartidaID(identificador);
-	//não tem partida com esse id
-	if(partida == null){
+	   //não tem partida com esse id
+	   if(partida == null){
             return -1;
-	}
-	return partida.encerraPartida(identificador);
+	   }
+	   return partida.encerraPartida(identificador);
     }
 
     @WebMethod(operationName = "temPartida")

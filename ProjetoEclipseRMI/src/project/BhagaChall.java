@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-//import static org.junit.Assert.*;
-//import java.util.Scanner;
 
 import org.junit.Test;
 
@@ -87,8 +85,6 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			
 			public int[] findTigre(int tigre){
 				int[] xy = new int[2];
-				//System.out.println(tigre);
-				//System.out.println((char)tigre);
 				for(int i = 0; i < board[0].length; i++){
 					for(int j = 0; j < board[0].length ; j++){
 						if(board[i][j] == (char) tigre){
@@ -149,7 +145,6 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 				ID = id;
 				nome = n;
 				jogador = jogo;
-				//tempoJogada = 0;
 			}
 			
 			public int getID(){
@@ -625,7 +620,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 
 				for(int j = 0; j < 7 ; j++){
 					int[] movimentoTigreSemPulo = movimentoSemPulo.getDirecao(j);
-					if(movimentoTigreSemPulo[0] == -1){// && movimentoTigreComPulo[0] == -1){
+					if(movimentoTigreSemPulo[0] == -1){
 						continue;
 					}else if(!temCabra(movimentoTigreSemPulo[0], movimentoTigreSemPulo[1]) && !temTigre(movimentoTigreSemPulo[0], movimentoTigreSemPulo[1])){
 						return false;
@@ -633,7 +628,7 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 				}
 				for(int j = 0; j < 7 ; j++){
 					int[] movimentoTigreComPulo = movimentoComPulo.getDirecao(j);
-					if(movimentoTigreComPulo[0] == -1){// && movimentoTigreComPulo[0] == -1){
+					if(movimentoTigreComPulo[0] == -1){
 						continue;
 					}else if(!temCabra(movimentoTigreComPulo[0], movimentoTigreComPulo[1]) && temTigre(movimentoTigreComPulo[0], movimentoTigreComPulo[1])){
 						return false;
@@ -679,7 +674,6 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			//retorna id do jogador
 			if(jogadores[0] == null){
 				jogadores[0] = new Jogador(ID++,nome,0);
-				//jogadores[0].tempoInicio = System.currentTimeMillis();
 				return jogadores[0].getID();					
 			}else if(jogadores[1] == null){
 				//se o usuario já esta cadastrado retorna -1		
@@ -698,12 +692,11 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			assertSame(BhagaChall.ID, bhaga.registraJogador("Matheus"));
 			assertSame(-1, bhaga.registraJogador("Matheus"));	
 			assertSame(BhagaChall.ID, bhaga.registraJogador("Carol"));
-			assertSame(-2, bhaga.registraJogador("Maria"));			
+			assertSame(-2, bhaga.registraJogador("João"));			
 			assertSame(-2, bhaga.registraJogador("Pedro"));
-			assertSame(-2, bhaga.registraJogador("Valnei"));
+			assertSame(-2, bhaga.registraJogador("Bruno"));
 		}
-		
-		//para implementar o temporizador utilizar thread que verifica de um em um segundo e quando atingir trinta encerra
+	
 		/* 2) encerraPartida
 		 * Recebe: id do usuário (obtido através da chamada registraJogador)
 		 * Retorna: -­1 (erro), 0 (ok) || zera os dados da partida e o jogador adversario ganha por wo 
@@ -739,11 +732,6 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			
 			Jogador player = getJogador(id);
 			if(player == null){return -1;}	
-			
-//			//tempo de espera esgotado retorna -2
-//			if(System.currentTimeMillis() - player.tempoInicio > 120*1000){
-//				return -2;
-//			}
 			
 			//se ainda não tem partida
 			if(jogadores[0] == null || jogadores[1] == null){
@@ -931,7 +919,6 @@ public class BhagaChall extends UnicastRemoteObject implements BhagaChallInterfa
 			if(posicaoTigre != null){
 				Coordenada movimento = movesSemPulo[posicaoTigre[0]][posicaoTigre[1]];
 				int[] movimentoTigreSemPulo = movimento.getDirecao(direcao);
-				//System.out.println(movimentoTigreSemPulo[0] +"-"+ movimentoTigreSemPulo[1]);
 				//direcao invalido
 				if(movimentoTigreSemPulo[0] == -1){ 
 					return -5;

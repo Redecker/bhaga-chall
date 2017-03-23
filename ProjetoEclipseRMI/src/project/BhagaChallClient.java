@@ -4,10 +4,6 @@ package project;
 import java.rmi.Naming;
 import java.util.Scanner;
 
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
-import java.awt.event.KeyEvent;
-
 
 
 public class BhagaChallClient {
@@ -26,10 +22,10 @@ public class BhagaChallClient {
 			int id = bhagaChall.registraJogador(args[1]);
 			if(id == -1){
 				System.out.println("Usuario já está jogando no momento.");
-				return;
+				System.exit(1);
 			}else if(id == -2){
 				System.out.println("Limite de partidas atingido.");
-				return;
+				System.exit(1);
 			}
 			int jogador = -1;
 			int turno = 1;
@@ -87,9 +83,6 @@ public class BhagaChallClient {
 				break;
 			}
 			
-			long start = System.nanoTime();    
-			long elapsedTime = System.nanoTime() - start;
-
 			
 			//processo de jogar o jogo
 			while(true){
@@ -217,6 +210,7 @@ public class BhagaChallClient {
 							System.out.println("Você perdeu por WO! Tente outra vez.");
 							return;
 					}
+				leitor.close();
 				}	
 		}catch (Exception e) {
 			System.out.println ("BhagaChallClient failed.");

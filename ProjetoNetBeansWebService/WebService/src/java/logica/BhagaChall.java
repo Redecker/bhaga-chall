@@ -78,8 +78,6 @@ public class BhagaChall{
 			
 			public int[] findTigre(int tigre){
 				int[] xy = new int[2];
-				//System.out.println(tigre);
-				//System.out.println((char)tigre);
 				for(int i = 0; i < board[0].length; i++){
 					for(int j = 0; j < board[0].length ; j++){
 						if(board[i][j] == (char) tigre){
@@ -140,7 +138,6 @@ public class BhagaChall{
 				ID = id;
 				nome = n;
 				jogador = jogo;
-				//tempoJogada = 0;
 			}
 			
 			public int getID(){
@@ -164,7 +161,6 @@ public class BhagaChall{
 		private Coordenada[][] movesComPulo;
 		private int proximaCabra;
 		private int cabrasCapturadas;
-		//private static int ID = 0;
 		
 		public BhagaChall(){			
 			tabuleiro = new Tabuleiro();
@@ -598,47 +594,43 @@ public class BhagaChall{
 					return 1;
 				}
 			}
-                        if(tigrePreso()){
-                            System.out.println("<tag> entrei nos tigres capturados");
-                            if(player.getMove() == 0){
-				return 1;
-                            }
-                            if(player.getMove() == 1){
-                                return 0;
-                            }
+            if(tigrePreso()){
+                if(player.getMove() == 0){
+					return 1;
+                }
+                if(player.getMove() == 1){
+                    return 0;
+                }
 			}
 			return -1;
 		}
 
 		private ArrayList<Integer[]> tigreTemQueComer() {
-                    ArrayList<Integer[]> toReturn = new ArrayList<>();
-                    //para cada tigre teste se ele tem como comer alguma pedra
-                    for(int i = 0 ;i < 4; i++){
-                        int[] posicaoTigre = tabuleiro.findTigre(i+49);
-                        Coordenada movimentoSemPulo = movesSemPulo[posicaoTigre[0]][posicaoTigre[1]];
-			Coordenada movimentoComPulo = movesComPulo[posicaoTigre[0]][posicaoTigre[1]];
-                        //para cada direção
-			for(int j = 0; j < 7 ; j++){
-                            int[] movimentoTigreSemPulo = movimentoSemPulo.getDirecao(j);
-                            int[] movimentoTigreComPulo = movimentoComPulo.getDirecao(j);
-                            if(movimentoTigreSemPulo[0] == -1 || movimentoTigreComPulo[0] == -1){continue;}
-                            
-                            //tem cabra?
-                            if(temCabra(movimentoTigreSemPulo[0], movimentoTigreSemPulo[1])){
-                                //tenho como pular?
-				if(!temCabra(movimentoTigreComPulo[0], movimentoTigreComPulo[1]) && !temTigre(movimentoTigreComPulo[0], movimentoTigreComPulo[1])){
-                                    Integer[] tigredirecao = new Integer[2];
-                                    tigredirecao[0] = i+1;
-                                    tigredirecao[1] = j;
-                                    toReturn.add(tigredirecao);
-                                }
-                            }
-			}
+            ArrayList<Integer[]> toReturn = new ArrayList<>();
+            //para cada tigre teste se ele tem como comer alguma pedra
+            for(int i = 0 ;i < 4; i++){
+                int[] posicaoTigre = tabuleiro.findTigre(i+49);
+                Coordenada movimentoSemPulo = movesSemPulo[posicaoTigre[0]][posicaoTigre[1]];
+				Coordenada movimentoComPulo = movesComPulo[posicaoTigre[0]][posicaoTigre[1]];
+                //para cada direção
+				for(int j = 0; j < 7 ; j++){
+                    int[] movimentoTigreSemPulo = movimentoSemPulo.getDirecao(j);
+                    int[] movimentoTigreComPulo = movimentoComPulo.getDirecao(j);
+                    if(movimentoTigreSemPulo[0] == -1 || movimentoTigreComPulo[0] == -1){continue;}
+                    //tem cabra?
+                    if(temCabra(movimentoTigreSemPulo[0], movimentoTigreSemPulo[1])){
+                        //tenho como pular?
+						if(!temCabra(movimentoTigreComPulo[0], movimentoTigreComPulo[1]) && !temTigre(movimentoTigreComPulo[0], movimentoTigreComPulo[1])){
+                            Integer[] tigredirecao = new Integer[2];
+                            tigredirecao[0] = i+1;
+                            tigredirecao[1] = j;
+                            toReturn.add(tigredirecao);
+                        }
                     }
-                    return toReturn;
-                }                
-                
-                
+				}
+            }
+            return toReturn;
+        }                
                 
 		private boolean tigrePreso() {
 			//para cada tigre teste se ele tem como se mexer
@@ -649,7 +641,7 @@ public class BhagaChall{
 
 				for(int j = 0; j < 7 ; j++){
 					int[] movimentoTigreSemPulo = movimentoSemPulo.getDirecao(j);
-					if(movimentoTigreSemPulo[0] == -1){// && movimentoTigreComPulo[0] == -1){
+					if(movimentoTigreSemPulo[0] == -1){
 						continue;
 					}else if(!temCabra(movimentoTigreSemPulo[0], movimentoTigreSemPulo[1]) && !temTigre(movimentoTigreSemPulo[0], movimentoTigreSemPulo[1])){
 						return false;
@@ -657,7 +649,7 @@ public class BhagaChall{
 				}
 				for(int j = 0; j < 7 ; j++){
 					int[] movimentoTigreComPulo = movimentoComPulo.getDirecao(j);
-					if(movimentoTigreComPulo[0] == -1){// && movimentoTigreComPulo[0] == -1){
+					if(movimentoTigreComPulo[0] == -1){
 						continue;
 					}else if(!temCabra(movimentoTigreComPulo[0], movimentoTigreComPulo[1]) && !temTigre(movimentoTigreComPulo[0], movimentoTigreComPulo[1])){
 						return false;
@@ -701,15 +693,13 @@ public class BhagaChall{
 		public int registraJogador(String nome, int id){			
 			//retorna id do jogador
 			if(jogadores[0] == null){
-				//jogadores[0] = new Jogador(ID++,nome,0);
-                                jogadores[0] = new Jogador(id,nome,0);
-				//jogadores[0].tempoInicio = System.currentTimeMillis();
+                jogadores[0] = new Jogador(id,nome,0);
 				return jogadores[0].getID();					
 			}else if(jogadores[1] == null){
 				//se o usuario já esta cadastrado retorna -1		
 				if(jogadores[0].getNome().equals(nome)) return -1; 
-				//jogadores[1] = new Jogador(ID++,nome,1);
-                                jogadores[1] = new Jogador(id,nome,1);
+			
+			    jogadores[1] = new Jogador(id,nome,1);
 				return jogadores[1].getID();
 			}
 			//se não tem mais espaço pra jogar
@@ -839,7 +829,7 @@ public class BhagaChall{
                         
                         
                         
-                        //se tem alguma cabra para comer, tem que coemr!!!
+       	    //se tem alguma cabra para comer, tem que comer!!!
 			ArrayList<Integer[]> comerCabras = tigreTemQueComer();
                         if(comerCabras.size() > 0){
                             for(Integer[] tigredirecao : comerCabras){
@@ -865,7 +855,6 @@ public class BhagaChall{
 			if(posicaoTigre != null){
 				Coordenada movimento = movesSemPulo[posicaoTigre[0]][posicaoTigre[1]];
 				int[] movimentoTigreSemPulo = movimento.getDirecao(direcao);
-				//System.out.println(movimentoTigreSemPulo[0] +"-"+ movimentoTigreSemPulo[1]);
 				//direcao invalido
 				if(movimentoTigreSemPulo[0] == -1){ 
 					return 0;//-5;
